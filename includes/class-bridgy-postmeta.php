@@ -12,6 +12,7 @@ class bridgy_postmeta {
 		add_action( 'save_post', array('bridgy_postmeta', 'save_post'), 8, 2 );
 		add_action('transition_post_status', array('bridgy_postmeta', 'transition_post_status') ,12,5);
 		add_filter('the_content', array('bridgy_postmeta', 'the_content') );
+		add_filter('syn_add_links', array('bridgy_postmeta', 'syn_add_links') );
 	}
 
 	/* Meta box setup function. */
@@ -43,7 +44,7 @@ class bridgy_postmeta {
 			foreach ($options as $key => $value) {
 				if($options[$key]==0) {
 					unset($bridgy_checkboxes[$key]);
-				}
+				}
 			}
 		}
 		return $bridgy_checkboxes;
@@ -117,20 +118,22 @@ class bridgy_postmeta {
 			self::save_post($post->ID,$post);
 		}
     $bridgy = get_post_meta($post->ID, '_bridgy_options', true);
-		$syn = get_post_meta($post->ID, 'syndication_urls', true);
-		$url = wp_get_shortlink($post->ID);
-		if(empty($url)) {
+		$syn = get_post_meta($post->ID, 'bridgy_syndication', true);
+		$options = get_option('bridgy_options');
+		if ($options['shortlink'] == 1 ) {
+			$url = wp_get_shortlink($post->ID);
+		}
+		else {
 			$url = get_permalink($post->ID);
 		}
-		if (!$syn) { $syn=array(); }
+		if (!$syn) { $syn=""; }
 		if ( ! empty($bridgy) ) {
     	foreach ($bridgy as $key => $value) {
         $response = send_webmention($url, 'https://www.brid.gy/publish/' . $key);
 			  $response_code = wp_remote_retrieve_response_code( $response );
         $json = json_decode($response['body']);
-			  $syn = "";
 				if ($response_code==200) {
-					 	$syn .= "\n" . $json->url; 
+					 	$syn = "\n" . $json->url; 
 				}
 				if (($response_code==400)||($response_code==500)) {
 						error_log($json->error);
@@ -138,10 +141,10 @@ class bridgy_postmeta {
 				error_log('Help: ' . $syn);
     	}
 			if (!empty($syn)) {
-      	update_post_meta($post->ID, 'mf2_syndication', $syn);
+      	update_post_meta($post->ID, 'bridgy_syndication', $syn);
 			}
 			else {
-				delete_post_meta($post->ID, 'mf2_syndication');
+				delete_post_meta($post->ID, 'bridgy_syndication');
 			}
 		}
 	}
@@ -162,9 +165,20 @@ class bridgy_postmeta {
     foreach ($bridgy as $key => $value) {
 			$publish .= '<a class="' . $class . '" href="https://www.brid.gy/publish/' . $key . '"></a>';
 		}
-		return $content . $publish . var_dump(get_post_meta(get_the_ID(), 'bridgy_response', true));
+		return $content . $publish;
 ;	
 	}
+
+	public static function syn_add_links($urls) {
+		$bridgy = get_post_meta(get_the_ID(), 'bridgy_syndication');
+		if(is_array($bridgy)) {
+			return array_merge($urls, syn_meta::clean_urls($bridgy) );
+		}
+		else {
+			return $urls;
+		}
+	}
+
 } // End Class
 
 ?>

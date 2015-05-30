@@ -146,8 +146,17 @@ class bridgy_postmeta {
     $bridgy = get_post_meta(get_the_ID(), '_bridgy_options', true);
   	if (empty($bridgy)) { return $content; }
     $publish = "";
+    $options = get_option('bridgy_options');
+		$classes = array();
+		if ($options['omitlink']==1) {
+			$classes[] = 'u-bridgy-omit-link';
+		}
+    if ($options['ignoreformatting']==1) {
+      $classes[] = 'u-bridgy-ignore-formatting';
+    }
+		$class = implode(' ', $classes);
     foreach ($bridgy as $key => $value) {
-			$publish .= '<a href="https://www.brid.gy/publish/' . $key . '"></a>';
+			$publish .= '<a class="' . $class . '" href="https://www.brid.gy/publish/' . $key . '"></a>';
 		}
 		return $content . $publish . var_dump(get_post_meta(get_the_ID(), 'bridgy_response', true));
 ;	

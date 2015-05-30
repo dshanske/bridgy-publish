@@ -14,6 +14,9 @@ class bridgy_config {
 		add_settings_field( 'twitter', __('Enable Twitter Option', 'Bridgy Publish'), array('bridgy_config', 'checkbox_callback'), 'bridgy_options', 'bridgy-content' ,  array( 'name' => 'twitter') );
 		add_settings_field( 'facebook', __('Enable Facebook Option', 'Bridgy Publish'), array('bridgy_config', 'checkbox_callback'), 'bridgy_options', 'bridgy-content' ,  array( 'name' => 'facebook') );
     add_settings_field( 'instagram', __('Enable Instagram Option', 'Bridgy Publish'), array('bridgy_config', 'checkbox_callback'), 'bridgy_options', 'bridgy-content' ,  array( 'name' => 'instagram') );
+    add_settings_field( 'omitlink', __('Disable Link Back to Post', 'Bridgy Publish'), array('bridgy_config', 'checkbox_callback'), 'bridgy_options', 'bridgy-content' ,  array( 'name' => 'omitlink') );
+    add_settings_field( 'ignoreformatting', __('Ignore Formatting', 'Bridgy Publish'), array('bridgy_config', 'checkbox_callback'), 'bridgy_options', 'bridgy-content' ,  array( 'name' => 'ignoreformatting') );
+
 	}
 
 	public static function admin_menu() {

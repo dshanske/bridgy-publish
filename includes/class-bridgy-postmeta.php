@@ -118,10 +118,14 @@ class bridgy_postmeta {
 		}
     $bridgy = get_post_meta($post->ID, '_bridgy_options', true);
 		$syn = get_post_meta($post->ID, 'syndication_urls', true);
+		$url = wp_get_shortlink($post->ID);
+		if(empty($url)) {
+			$url = get_permalink($post->ID);
+		}
 		if (!$syn) { $syn=array(); }
 		if ( ! empty($bridgy) ) {
     	foreach ($bridgy as $key => $value) {
-        $response = send_webmention(get_permalink(), 'https://www.brid.gy/publish/' . $key);
+        $response = send_webmention($url, 'https://www.brid.gy/publish/' . $key);
 			  $response_code = wp_remote_retrieve_response_code( $response );
         $json = json_decode($response['body']);
 			  $syn = "";

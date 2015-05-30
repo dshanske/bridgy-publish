@@ -10,7 +10,7 @@ class bridgy_postmeta {
 		add_action('load-post.php', array('bridgy_postmeta' , 'bridgybox_setup' ) );
 		add_action('load-post-new.php', array('bridgy_postmeta', 'bridgybox_setup') );
 		add_action( 'save_post', array('bridgy_postmeta', 'save_post'), 8, 2 );
-		add_action('transition_post_status', array('bridgy_postmeta', 'transition_post_status') ,5,3);
+		add_action('transition_post_status', array('bridgy_postmeta', 'transition_post_status') ,12,5);
 		add_filter('the_content', array('bridgy_postmeta', 'the_content') );
 	}
 
@@ -109,28 +109,28 @@ class bridgy_postmeta {
 			self::save_post($post->ID,$post);
 		}
     $bridgy = get_post_meta($post->ID, '_bridgy_options', true);
-		$syn = get_post_meta($post->ID, 'bridgy_urls', true);
+		$syn = get_post_meta($post->ID, 'syndication_urls', true);
 		if (!$syn) { $syn=array(); }
 		if ( ! empty($bridgy) ) {
     	foreach ($bridgy as $key => $value) {
         $response = send_webmention(get_permalink(), 'https://www.brid.gy/publish/' . $key);
 			  $response_code = wp_remote_retrieve_response_code( $response );
-        $json = json_decode(wp_remote_retrieve_body($response), true);
+        $json = json_decode($response['body']);
+			  $syn = "";
 				if ($response_code==200) {
-					 if (!isset($json['url']) ) {
-					 	$syn[] = $json['url']; 
-					 }
+					 	$syn .= "\n" . $json->url; 
 				}
 				if (($response_code==400)||($response_code==500)) {
-						error_log($json['error']);
+						error_log($json->error);
 				}
+				error_log('Help: ' . $syn);
     	}
-		}
-		if (empty($syn) ) {
-	    delete_post_meta($post->ID, 'bridgy_urls');
-		}
-		else {
-      update_post_meta($post->ID, 'bridgy_urls', $syn);
+			if (!empty($syn)) {
+      	update_post_meta($post->ID, 'mf2_syndication', $syn);
+			}
+			else {
+				delete_post_meta($post->ID, 'mf2_syndication');
+			}
 		}
 	}
 
@@ -141,7 +141,8 @@ class bridgy_postmeta {
     foreach ($bridgy as $key => $value) {
 			$publish .= '<a href="https://www.brid.gy/publish/' . $key . '"></a>';
 		}
-		return $content . $publish;	
+		return $content . $publish . var_dump(get_post_meta(get_the_ID(), 'bridgy_response', true));
+;	
 	}
 } // End Class
 

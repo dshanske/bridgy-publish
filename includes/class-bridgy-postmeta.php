@@ -1,0 +1,148 @@
+<?php
+// Adds Post Meta Box for Bridgy Publish
+
+add_action( 'init' , array('bridgy_postmeta', 'init') );
+
+// The bridgy_postmeta class sets up a post meta box to publish using Bridgy
+class bridgy_postmeta {
+	public static function init() {
+		// Add meta box to new post/post pages only 
+		add_action('load-post.php', array('bridgy_postmeta' , 'bridgybox_setup' ) );
+		add_action('load-post-new.php', array('bridgy_postmeta', 'bridgybox_setup') );
+		add_action( 'save_post', array('bridgy_postmeta', 'save_post'), 8, 2 );
+		add_action('transition_post_status', array('bridgy_postmeta', 'transition_post_status') ,5,3);
+		add_filter('the_content', array('bridgy_postmeta', 'the_content') );
+	}
+
+	/* Meta box setup function. */
+	public static function bridgybox_setup() {
+  	/* Add meta boxes on the 'add_meta_boxes' hook. */
+  	add_action( 'add_meta_boxes', array('bridgy_postmeta', 'add_postmeta_boxes') );
+	}
+
+	/* Create one or more meta boxes to be displayed on the post editor screen. */
+	public static function add_postmeta_boxes() {
+		add_meta_box(
+			'bridgybox-meta',      // Unique ID
+			esc_html__( 'Bridgy Publish To', 'Bridgy Publish' ),    // Title
+			array('bridgy_postmeta', 'metabox'),   // Callback function
+			'post',         // Admin page (or post type)
+			'side',         // Context
+			'default'         // Priority
+		);
+	}
+
+	public static function bridgy_checkboxes() {
+		$bridgy_checkboxes = array(
+                        'twitter' => _x( "Twitter", 'Bridgy Publish' ),
+                        'facebook' => _x( "Facebook", 'Bridgy Publish' ),
+                        'instagram' => _x( "Instagram", 'Bridgy Publish' )
+                        );
+		return $bridgy_checkboxes;
+	}	
+
+	public static function metabox( $object, $box ) {
+		wp_nonce_field( 'bridgy_metabox', 'bridgy_metabox_nonce' ); 
+		$bridgy_checkboxes = self::bridgy_checkboxes();
+		$bridgy = get_post_meta(get_the_ID(), '_bridgy_options', true);
+		echo '<ul>';
+		foreach ($bridgy_checkboxes as $key => $value) {
+			echo '<li>';
+			echo '<input type="checkbox" name="bridgy_' . $key . '"';
+			if (isset($bridgy[$key]) ) {
+				echo ' value="yes" ' . checked( $bridgy[$key], 'yes' ) . '"';
+			}
+			echo ' />';
+      echo '<label for="bridgy_' . $key . '">' . $value . '</label>';
+			echo '</li>';
+		}
+		echo '</ul>';
+	}
+
+	/* Save the meta box's post metadata. */
+	public static function save_post( $post_id, $post ) {
+		/*
+		 * We need to verify this came from our screen and with proper authorization,
+		 * because the save_post action can be triggered at other times.
+		 */
+		// Check if our nonce is set.
+		if ( ! isset( $_POST['bridgy_metabox_nonce'] ) ) {
+			return;
+		}
+
+		// Verify that the nonce is valid.
+		if ( ! wp_verify_nonce( $_POST['bridgy_metabox_nonce'], 'bridgy_metabox' ) ) {
+			return;
+		}
+
+		// If this is an autosave, our form has not been submitted, so we don't want to do anything.
+		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+			return;
+		}
+
+		// Check the user's permissions.
+		if ( isset( $_POST['post_type'] ) && 'page' == $_POST['post_type'] ) {
+			if ( ! current_user_can( 'edit_page', $post_id ) ) {
+				return;
+			}
+		} 
+  	else {
+			if ( ! current_user_can( 'edit_post', $post_id ) ) {
+				return;
+			}
+		}
+		$bridgy_checkboxes = self::bridgy_checkboxes();
+		$bridgy=array();
+		/* OK, its safe for us to save the data now. */
+    foreach ($bridgy_checkboxes as $key => $value) {
+			if (isset( $_POST['bridgy_'.$key]) ) {
+				$bridgy[$key]= 'yes';
+			}
+		}
+		if(!empty($bridgy)) {
+			update_post_meta( $post_id,'_bridgy_options', $bridgy);
+		}  
+	}
+
+	public static function transition_post_status($new, $old, $post) {
+		if ($new == 'publish' && $old != 'publish') {
+			self::save_post($post->ID,$post);
+		}
+    $bridgy = get_post_meta($post->ID, '_bridgy_options', true);
+		$syn = get_post_meta($post->ID, 'bridgy_urls', true);
+		if (!$syn) { $syn=array(); }
+		if ( ! empty($bridgy) ) {
+    	foreach ($bridgy as $key => $value) {
+        $response = send_webmention(get_permalink(), 'https://www.brid.gy/publish/' . $key);
+			  $response_code = wp_remote_retrieve_response_code( $response );
+        $json = json_decode(wp_remote_retrieve_body($response), true);
+				if ($response_code==200) {
+					 if (!isset($json['url']) ) {
+					 	$syn[] = $json['url']; 
+					 }
+				}
+				if (($response_code==400)||($response_code==500)) {
+						error_log($json['error']);
+				}
+    	}
+		}
+		if (empty($syn) ) {
+	    delete_post_meta($post->ID, 'bridgy_urls');
+		}
+		else {
+      update_post_meta($post->ID, 'bridgy_urls', $syn);
+		}
+	}
+
+	public static function the_content($content) {
+    $bridgy = get_post_meta(get_the_ID(), '_bridgy_options', true);
+  	if (empty($bridgy)) { return $content; }
+    $publish = "";
+    foreach ($bridgy as $key => $value) {
+			$publish .= '<a href="https://www.brid.gy/publish/' . $key . '"></a>';
+		}
+		return $content . $publish;	
+	}
+} // End Class
+
+?>

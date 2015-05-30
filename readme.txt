@@ -13,7 +13,7 @@ Bridgy Publish Support for your Site
 
 People often post something on their web site, then post a link to it on Facebook or Twitter so that other people will see it. The IndieWeb community calls this POSSE.
 
-Bridgy Publish adds a hidden link to your post, and sends a webmention to Bridgy, which will create a post on the appropriate site.
+Bridgy Publish adds a hidden link to your post, and sends a webmention to Bridgy, which will create a post on the appropriate site. It also stores the link for display by Syndication Links
 
 == Changelog == 
 

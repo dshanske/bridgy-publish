@@ -33,11 +33,19 @@ class bridgy_postmeta {
 	}
 
 	public static function bridgy_checkboxes() {
+		$options = get_option('bridgy_options');
 		$bridgy_checkboxes = array(
                         'twitter' => _x( "Twitter", 'Bridgy Publish' ),
                         'facebook' => _x( "Facebook", 'Bridgy Publish' ),
                         'instagram' => _x( "Instagram", 'Bridgy Publish' )
                         );
+		if($options) {
+			foreach ($options as $key => $value) {
+				if($options[$key]==0) {
+					unset($bridgy_checkboxes[$key]);
+				}
+			}
+		}
 		return $bridgy_checkboxes;
 	}	
 

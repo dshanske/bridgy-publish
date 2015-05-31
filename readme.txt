@@ -1,7 +1,7 @@
 === Bridgy Publish ===
 Contributors: dshanske
 Tags: indieweb, POSSE, bridgy
-Stable tag: 0.1.0
+Stable tag: 1.0.0
 Requires at least: 4.0
 Tested up to: 4.2.2
 License: GPLv2 or later
@@ -11,10 +11,16 @@ Bridgy Publish Support for your Site
 
 == Description == 
 
-People often post something on their web site, then post a link to it on Facebook or Twitter so that other people will see it. The IndieWeb community calls this POSSE.
+People often post something on their web site, then post a copy elsewhere so that other people will see it. The IndieWeb community calls this POSSE.
 
-Bridgy Publish adds a hidden link to your post, and sends a webmention to Bridgy, which will create a post on the appropriate site. It also stores the link for display by Syndication Links
+[Bridgy Publish](https://www.brid.gy/about#publishing) adds a hidden link to your post, and sends a webmention to Bridgy, which will create a post on the appropriate site. It also stores the link for display by Syndication Links. 
+
+The plugin requires the [webmention](https://wordpress.org/plugins/webmention/) plugin and will not
+work without it.
 
 == Changelog == 
 
-* Version 0.1.0 - Initial release
+= Version 1.0.0 =
+	* Initial release
+	* Takes over Syndication Links storage of Bridgy Publish links
+

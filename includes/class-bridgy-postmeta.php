@@ -120,7 +120,7 @@ class bridgy_postmeta {
     $bridgy = get_post_meta($post->ID, '_bridgy_options', true);
 		$syn = get_post_meta($post->ID, 'bridgy_syndication', true);
 		$options = get_option('bridgy_options');
-		if ($options['shortlink'] == 1 ) {
+		if ($options['shortlinks'] == 1 ) {
 			$url = wp_get_shortlink($post->ID);
 		}
 		else {

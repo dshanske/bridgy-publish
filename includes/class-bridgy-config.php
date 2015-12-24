@@ -44,7 +44,6 @@ class bridgy_config {
 }
 
 	public static function options_form() {
-		kind_taxonomy::kind_defaultterms ();
 		echo '<div class="wrap">';
 		echo '<h2>' . __('Bridgy Publish', 'Bridgy Publish') . '</h2>';
 		echo '<p>'; 

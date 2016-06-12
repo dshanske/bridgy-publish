@@ -136,9 +136,8 @@ class bridgy_postmeta {
 					 	$syn = "\n" . $json->url; 
 				}
 				if (($response_code==400)||($response_code==500)) {
-						error_log($json->error);
+						error_log( 'Bridgy Publish Error: ' . $json->error);
 				}
-				error_log('Help: ' . $syn);
     	}
 			if (!empty($syn)) {
       	update_post_meta($post->ID, 'bridgy_syndication', $syn);

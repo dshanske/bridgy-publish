@@ -1,7 +1,7 @@
 <?php
 
 add_action( 'admin_init' , array('bridgy_config', 'admin_init') );
-add_action('admin_menu', array('bridgy_config', 'admin_menu') );
+add_action('admin_menu', array('bridgy_config', 'admin_menu'), 13 );
 
 
 // The bridgy_config class sets up the Settings Page for the plugin
@@ -22,7 +22,15 @@ class bridgy_config {
 	}
 
 	public static function admin_menu() {
-		add_options_page( '', __('Bridgy Publish', 'Bridgy Publish'), 'manage_options', 'bridgy_options', array('bridgy_config', 'options_form') );
+		// If the IndieWeb Plugin is installed use its menu.
+		if ( class_exists( 'IndieWeb_Plugin' ) ) {
+			add_submenu_page( 'indieweb', __('Bridgy Publish', 'Bridgy Publish'), __('Bridgy Publish',
+						'Bridgy Publish'), 'manage_options', 'bridgy_options', array('bridgy_config', 'options_form') );
+		}
+		else {
+			add_options_page( '', __('Bridgy Publish', 'Bridgy Publish'), 'manage_options', 'bridgy_options', array('bridgy_config', 'options_form') );
+
+		}
 	}
 
 	public static function settings_link($links) {

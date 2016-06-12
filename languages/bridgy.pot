@@ -1,24 +1,20 @@
-# Copyright (C) 2015 David Shanske
+# Copyright (C) 2016 David Shanske
 # This file is distributed under the same license as the Bridgy Publish package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Bridgy Publish 1.0.0\n"
+"Project-Id-Version: Bridgy Publish 1.0.1\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/bridgy-publish\n"
-"POT-Creation-Date: 2015-05-30 23:29:02+00:00\n"
+"POT-Creation-Date: 2016-06-12 00:05:51+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2015-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2016-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "X-Generator: grunt-wp-i18n 0.4.9\n"
 
-#: bridgy-publish.php:14
-msgid "The minimum PHP version required for this plugin is 5.3"
-msgstr ""
-
-#: bridgy-publish.php:17
-msgid "This plugin requires the WebMention Plugin to be active"
+#: bridgy-publish.php:19
+msgid "Bridgy Publish Requires the WordPress Webmention Plugin"
 msgstr ""
 
 #: includes/class-bridgy-config.php:13
@@ -53,7 +49,7 @@ msgstr ""
 msgid "Bridgy Publish"
 msgstr ""
 
-#: includes/class-bridgy-config.php:51
+#: includes/class-bridgy-config.php:58
 msgid "Adds support for publishing through Bridgy"
 msgstr ""
 

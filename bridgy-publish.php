@@ -3,24 +3,16 @@
  * Plugin Name: Bridgy Publish
  * Plugin URI: https://github.com/dshanske/bridgy-publish
  * Description: Bridgy Publish for WordPress
- * Version: 1.0.0
+ * Version: 1.0.1
  * Author: David Shanske
  * Author URI: http://david.shanske.com
  * Text Domain: Microformats2, POSSE
  */
 
-function bridgy_publish_activation() {
-  if (version_compare(phpversion(), 5.3, '<')) {
-    @trigger_error(__("The minimum PHP version required for this plugin is 5.3", "Bridgy Publish"), E_USER_ERROR );
-  }
-}
-
-register_activation_hook(__FILE__, 'bridgy_publish_activation');
-
 // Add a notice to the Admin Pages if the WordPress Webmentions Plugin isn't Activated
 add_action( 'admin_notices', 'bridgy_plugin_notice' );
 function bridgy_plugin_notice() {
-	if (!class_exists("WebMentionPlugin"))
+	if (!class_exists("Webmention_Plugin"))
 		{
 			echo '<div class="error"><p>';
 			echo '<a href="https://wordpress.org/plugins/webmention/">';

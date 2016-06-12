@@ -132,11 +132,17 @@ class bridgy_postmeta {
         $response = send_webmention($url, 'https://www.brid.gy/publish/' . $key);
 			  $response_code = wp_remote_retrieve_response_code( $response );
         $json = json_decode($response['body']);
-				if ($response_code==200) {
+				if ($response_code==201) {
 					 	$syn = "\n" . $json->url; 
 				}
 				if (($response_code==400)||($response_code==500)) {
 						error_log( 'Bridgy Publish Error: ' . $json->error);
+				}
+				else {
+					if (WP_DEBUG) {
+						error_log( 'Bridgy Published: ' . $response_code . ' ' . get_permalink( $post ) . ' => '
+								. serialize( $json ) );
+					}
 				}
     	}
 			if (!empty($syn)) {

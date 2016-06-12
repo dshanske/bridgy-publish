@@ -20,11 +20,17 @@ display by [Syndication Links](https://wordpress.org/plugins/syndication-links/)
 The plugin requires the [webmention](https://wordpress.org/plugins/webmention/) plugin and will not
 work without it.
 
+== Upgrade Notice ==
+
+= 1.0.1 = 
+Fixes bugs with update to the Webmention Plugin. Planning additional improvements
+
 == Changelog == 
 
 = Version 1.0.1 = 
 	* Bug Fixes
 	* If Indieweb Plugin is installed, move settings under that menu
+	* If WP_DEBUG is set - send Publish entries to the error log
 
 = Version 1.0.0 =
 	* Initial release

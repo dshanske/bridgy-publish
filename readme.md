@@ -1,7 +1,7 @@
 # Bridgy Publish #
 **Contributors:** dshanske  
 **Tags:** indieweb, POSSE, bridgy  
-**Stable tag:** 1.0.1  
+**Stable tag:** 1.1.0  
 **Requires at least:** 4.0  
 **Tested up to:** 4.5  
 **License:** GPLv2 or later  
@@ -17,8 +17,8 @@ People often post something on their web site, then post a copy elsewhere so tha
 webmention to Bridgy, which will create a post on the appropriate site. It also stores the link for
 display by [Syndication Links](https://wordpress.org/plugins/syndication-links/). 
 
-The plugin requires the [webmention](https://wordpress.org/plugins/webmention/) plugin and will not
-work without it.
+The plugin does nothing on its own and requires the [webmention](https://wordpress.org/plugins/webmention/) plugin and will not
+work without it. Development/Issues are done on [Github](https://github.com/dshanske/bridgy-publish).
 
 ## Upgrade Notice ##
 
@@ -26,6 +26,12 @@ work without it.
 Fixes bugs with update to the Webmention Plugin. Planning additional improvements
 
 ## Changelog ##
+
+### Version 1.1.0 ###
+	* Remove Instagram setting as deprecated
+	* Add Flickr setting as now supported
+	* Change webmention support notice to activate on send_webmention per request
+
 
 ### Version 1.0.1 ###
 	* Bug Fixes

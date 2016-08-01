@@ -13,7 +13,14 @@ class bridgy_config {
 		add_settings_section( 'bridgy-content', __('Options', 'Bridgy Publish')  , array('bridgy_config', 'options_callback'), 'bridgy_options' );
 		add_settings_field( 'twitter', __('Enable Twitter Option', 'Bridgy Publish'), array('bridgy_config', 'checkbox_callback'), 'bridgy_options', 'bridgy-content' ,  array( 'name' => 'twitter') );
 		add_settings_field( 'facebook', __('Enable Facebook Option', 'Bridgy Publish'), array('bridgy_config', 'checkbox_callback'), 'bridgy_options', 'bridgy-content' ,  array( 'name' => 'facebook') );
-    add_settings_field( 'instagram', __('Enable Instagram Option', 'Bridgy Publish'), array('bridgy_config', 'checkbox_callback'), 'bridgy_options', 'bridgy-content' ,  array( 'name' => 'instagram') );
+    add_settings_field( 'flickr', __('Enable Flickr Option', 'Bridgy Publish'),
+				array('bridgy_config', 'checkbox_callback'), 'bridgy_options', 'bridgy-content' ,  array(
+					'name' => 'flickr') );
+
+		add_settings_field( 'default', __('Default to Checked', 'Bridgy Publish'),
+				array('bridgy_config', 'checkbox_callback'), 'bridgy_options', 'bridgy-content',  
+				array( 'name' => 'default') );
+
     add_settings_field( 'omitlink', __('Disable Link Back to Post', 'Bridgy Publish'), array('bridgy_config', 'checkbox_callback'), 'bridgy_options', 'bridgy-content' ,  array( 'name' => 'omitlink') );
     add_settings_field( 'ignoreformatting', __('Ignore Formatting', 'Bridgy Publish'), array('bridgy_config', 'checkbox_callback'), 'bridgy_options', 'bridgy-content' ,  array( 'name' => 'ignoreformatting') );
 

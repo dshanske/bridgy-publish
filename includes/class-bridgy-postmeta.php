@@ -38,7 +38,7 @@ class bridgy_postmeta {
 		$bridgy_checkboxes = array(
                         'twitter' => _x( "Twitter", 'Bridgy Publish' ),
                         'facebook' => _x( "Facebook", 'Bridgy Publish' ),
-                        'instagram' => _x( "Instagram", 'Bridgy Publish' )
+                        'flickr' => _x( "Flickr", 'Bridgy Publish' )
                         );
 		if($options) {
 			foreach ($options as $key => $value) {

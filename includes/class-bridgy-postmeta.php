@@ -173,7 +173,7 @@ class Bridgy_Postmeta {
 	}
 
 	public static function syn_add_links($urls) {
-		$bridgy = get_post_meta( get_the_ID(), 'bridgy_syndication' );
+		$bridgy = get_post_meta( get_the_ID(), 'bridgy_syndication', true );
 		if ( is_array( $bridgy ) ) {
 			return array_merge( $urls, syn_meta::clean_urls( $bridgy ) );
 		} else {

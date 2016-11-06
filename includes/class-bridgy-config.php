@@ -1,9 +1,5 @@
 <?php
 
-add_action( 'admin_init', array( 'Bridgy_Config', 'admin_init' ) );
-add_action( 'admin_menu', array( 'Bridgy_Config', 'admin_menu' ), 13 );
-
-
 // The Bridgy_Config class sets up the Settings Page for the plugin
 class Bridgy_Config {
 

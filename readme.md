@@ -3,7 +3,7 @@
 **Tags:** indieweb, POSSE, bridgy  
 **Stable tag:** 1.1.0  
 **Requires at least:** 4.0  
-**Tested up to:** 4.5  
+**Tested up to:** 4.6.2  
 **License:** GPLv2 or later  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -20,18 +20,13 @@ display by [Syndication Links](https://wordpress.org/plugins/syndication-links/)
 The plugin does nothing on its own and requires the [webmention](https://wordpress.org/plugins/webmention/) plugin and will not
 work without it. Development/Issues are done on [Github](https://github.com/dshanske/bridgy-publish).
 
-## Upgrade Notice ##
-
-### 1.0.1 ###
-Fixes bugs with update to the Webmention Plugin. Planning additional improvements
-
 ## Changelog ##
 
 ### Version 1.1.0 ###
 	* Remove Instagram setting as deprecated
 	* Add Flickr setting as now supported
 	* Change webmention support notice to activate on send_webmention per request
-
+	* Comply with WordPress Standards
 
 ### Version 1.0.1 ###
 	* Bug Fixes

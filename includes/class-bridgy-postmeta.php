@@ -1,8 +1,6 @@
 <?php
 // Adds Post Meta Box for Bridgy Publish
 
-add_action( 'init' , array( 'Bridgy_Postmeta', 'init' ) );
-
 // The Bridgy_Postmeta class sets up a post meta box to publish using Bridgy
 class Bridgy_Postmeta {
 	public static function init() {
@@ -118,20 +116,23 @@ class Bridgy_Postmeta {
 		}
 		$bridgy = get_post_meta( $post->ID, '_bridgy_options', true );
 		$syn = get_post_meta( $post->ID, 'bridgy_syndication', true );
+		if ( ! is_array( $syn ) ) {
+			$syn = explode( "\n", $syn );
+		}
 		$options = get_option( 'bridgy_options' );
 		if ( 1 == $options['shortlinks'] ) {
 			$url = wp_get_shortlink( $post->ID );
 		} else {
 			$url = get_permalink( $post->ID );
 		}
-		if ( ! $syn ) { $syn = ''; }
+		if ( ! $syn ) { $syn = array(); }
 		if ( ! empty( $bridgy ) ) {
 			foreach ( $bridgy as $key => $value ) {
 				$response = send_webmention( $url, 'https://www.brid.gy/publish/' . $key );
 				  $response_code = wp_remote_retrieve_response_code( $response );
 				$json = json_decode( $response['body'] );
 				if ( 201 == $response_code ) {
-					 	$syn = "\n" . $json->url;
+					 	$syn[] = $json->url;
 				}
 				if ( (400 == $response_code)||(500 == $response_code) ) {
 						error_log( 'Bridgy Publish Error: ' . $json->error );
@@ -142,6 +143,7 @@ class Bridgy_Postmeta {
 					}
 				}
 			}
+			$syn = array_unique( array_filter( $syn ) );
 			if ( ! empty( $syn ) ) {
 				update_post_meta( $post->ID, 'bridgy_syndication', $syn );
 			} else {

@@ -6,7 +6,7 @@
  * Version: 1.1.0
  * Author: David Shanske
  * Author URI: http://david.shanske.com
- * Text Domain: Microformats2, POSSE
+ * Text Domain:
  */
 
 // Add a notice to the Admin Pages if the WordPress Webmentions Plugin isn't Activated
@@ -20,8 +20,17 @@ function bridgy_plugin_notice() {
 	}
 }
 
-// Config Class
-	require_once( plugin_dir_path( __FILE__ ) . 'includes/class-bridgy-config.php' );
+add_action( 'plugins_loaded', 'bridgy_plugin_init' );
 
-// Post Meta Class
+function bridgy_plugin_init() {
+	// Config Class
+	require_once( plugin_dir_path( __FILE__ ) . 'includes/class-bridgy-config.php' );
+	add_action( 'admin_init', array( 'Bridgy_Config', 'admin_init' ) );
+	add_action( 'admin_menu', array( 'Bridgy_Config', 'admin_menu' ), 13 );
+
+
+	// Post Meta Class
 	require_once( plugin_dir_path( __FILE__ ) . 'includes/class-bridgy-postmeta.php' );
+	add_action( 'init' , array( 'Bridgy_Postmeta', 'init' ) );
+
+}

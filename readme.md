@@ -1,9 +1,9 @@
 # Bridgy Publish #
 **Contributors:** dshanske  
 **Tags:** indieweb, POSSE, bridgy  
-**Stable tag:** 1.1.0  
-**Requires at least:** 4.0  
-**Tested up to:** 4.6.2  
+**Stable tag:** 1.2.0  
+**Requires at least:** 4.7  
+**Tested up to:** 4.7.1  
 **License:** GPLv2 or later  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -21,6 +21,12 @@ The plugin does nothing on its own and requires the [webmention](https://wordpre
 work without it. Development/Issues are done on [Github](https://github.com/dshanske/bridgy-publish).
 
 ## Changelog ##
+
+### Version 1.2.0 ###
+	* Add per post support for Bridgy backlink settings. Credit to @iamwebrocker for addition
+
+### Version 1.1.1 ###
+	* Fix compatibility with changes in Syndication Links and change storage to array from EOL separated string
 
 ### Version 1.1.0 ###
 	* Remove Instagram setting as deprecated

@@ -7,29 +7,29 @@ class Bridgy_Config {
 		$options = get_option( 'bridgy_options' );
 		register_setting( 'bridgy_options', 'bridgy_options' );
 
-		add_settings_section( 'bridgy-content', __( 'Options', 'Bridgy Publish' ), array( 'Bridgy_Config', 'options_callback' ), 'bridgy_options' );
-		add_settings_field( 'twitter', __( 'Enable Twitter Option', 'Bridgy Publish' ), array( 'Bridgy_Config', 'checkbox_callback' ), 'bridgy_options', 'bridgy-content' ,  array( 'name' => 'twitter' ) );
-		add_settings_field( 'facebook', __( 'Enable Facebook Option', 'Bridgy Publish' ), array( 'Bridgy_Config', 'checkbox_callback' ), 'bridgy_options', 'bridgy-content' ,  array( 'name' => 'facebook' ) );
-		add_settings_field( 'flickr', __( 'Enable Flickr Option', 'Bridgy Publish' ), array( 'Bridgy_Config', 'checkbox_callback' ), 'bridgy_options', 'bridgy-content' ,  array( 'name' => 'flickr' ) );
+		add_settings_section( 'bridgy-content', __( 'Options', 'bridgy-publish' ), array( 'Bridgy_Config', 'options_callback' ), 'bridgy_options' );
+		add_settings_field( 'twitter', __( 'Enable Twitter Option', 'bridgy-publish' ), array( 'Bridgy_Config', 'checkbox_callback' ), 'bridgy_options', 'bridgy-content' ,  array( 'name' => 'twitter' ) );
+		add_settings_field( 'facebook', __( 'Enable Facebook Option', 'bridgy-publish' ), array( 'Bridgy_Config', 'checkbox_callback' ), 'bridgy_options', 'bridgy-content' ,  array( 'name' => 'facebook' ) );
+		add_settings_field( 'flickr', __( 'Enable Flickr Option', 'bridgy-publish' ), array( 'Bridgy_Config', 'checkbox_callback' ), 'bridgy_options', 'bridgy-content' ,  array( 'name' => 'flickr' ) );
 
-		add_settings_field( 'default', __( 'Default to Checked', 'Bridgy Publish' ),
+		add_settings_field( 'default', __( 'Default to Checked', 'bridgy-publish' ),
 			array( 'Bridgy_Config', 'checkbox_callback' ), 'bridgy_options', 'bridgy-content',
 		array( 'name' => 'default' ) );
 
-		add_settings_field( 'omitlink', __( 'Disable Link Back to Post', 'Bridgy Publish' ), array( 'Bridgy_Config', 'checkbox_callback' ), 'bridgy_options', 'bridgy-content' ,  array( 'name' => 'omitlink' ) );
-		add_settings_field( 'ignoreformatting', __( 'Ignore Formatting', 'Bridgy Publish' ), array( 'Bridgy_Config', 'checkbox_callback' ), 'bridgy_options', 'bridgy-content' ,  array( 'name' => 'ignoreformatting' ) );
+		add_settings_field( 'omitlink', __( 'Disable Link Back to Post', 'bridgy-publish' ), array( 'Bridgy_Config', 'checkbox_callback' ), 'bridgy_options', 'bridgy-content' ,  array( 'name' => 'omitlink' ) );
+		add_settings_field( 'ignoreformatting', __( 'Ignore Formatting', 'bridgy-publish' ), array( 'Bridgy_Config', 'checkbox_callback' ), 'bridgy_options', 'bridgy-content' ,  array( 'name' => 'ignoreformatting' ) );
 
-		add_settings_field( 'shortlinks', __( 'Send Shortlinks insted of Full URL', 'Bridgy Publish' ), array( 'Bridgy_Config', 'checkbox_callback' ), 'bridgy_options', 'bridgy-content' ,  array( 'name' => 'shortlinks' ) );
+		add_settings_field( 'shortlinks', __( 'Send Shortlinks insted of Full URL', 'bridgy-publish' ), array( 'Bridgy_Config', 'checkbox_callback' ), 'bridgy_options', 'bridgy-content' ,  array( 'name' => 'shortlinks' ) );
 
 	}
 
 	public static function admin_menu() {
 		// If the IndieWeb Plugin is installed use its menu.
 		if ( class_exists( 'IndieWeb_Plugin' ) ) {
-			add_submenu_page( 'indieweb', __( 'Bridgy Publish', 'Bridgy Publish' ), __( 'Bridgy Publish',
-			'Bridgy Publish' ), 'manage_options', 'bridgy_options', array( 'Bridgy_Config', 'options_form' ) );
+			add_submenu_page( 'indieweb', __( 'bridgy-publish', 'bridgy-publish' ), __( 'bridgy-publish',
+			'bridgy-publish' ), 'manage_options', 'bridgy_options', array( 'Bridgy_Config', 'options_form' ) );
 		} else {
-			add_options_page( '', __( 'Bridgy Publish', 'Bridgy Publish' ), 'manage_options', 'bridgy_options', array( 'Bridgy_Config', 'options_form' ) );
+			add_options_page( '', __( 'bridgy-publish', 'bridgy-publish' ), 'manage_options', 'bridgy_options', array( 'Bridgy_Config', 'options_form' ) );
 		}
 	}
 
@@ -40,7 +40,7 @@ class Bridgy_Config {
 	}
 
 	public static function options_callback() {
-		_e( '', 'Bridgy Publish' );
+		_e( '', 'bridgy-publish' );
 	}
 
 	public static function checkbox_callback( array $args ) {
@@ -54,9 +54,9 @@ class Bridgy_Config {
 	public static function options_form() {
 		echo '<div class="wrap">';
 
-		echo '<h2>' . __( 'Bridgy Publish', 'Bridgy Publish' ) . '</h2>';
+		echo '<h2>' . __( 'Bridgy Publish', 'bridgy-publish' ) . '</h2>';
 		echo '<p>';
-		esc_html_e( 'Adds support for publishing through Bridgy', 'Bridgy Publish' );
+		esc_html_e( 'Adds support for publishing through Bridgy', 'bridgy-publish' );
 		echo '</p><hr />';
 		echo '<form method="post" action="options.php">';
 		settings_fields( 'bridgy_options' );

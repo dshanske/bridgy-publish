@@ -1,59 +1,67 @@
-# Copyright (C) 2016 David Shanske
+# Copyright (C) 2017 David Shanske
 # This file is distributed under the same license as the Bridgy Publish package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Bridgy Publish 1.0.1\n"
+"Project-Id-Version: Bridgy Publish 1.1.1\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/bridgy-publish\n"
-"POT-Creation-Date: 2016-06-12 00:05:51+00:00\n"
+"POT-Creation-Date: 2017-01-14 05:39:45+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2016-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2017-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "X-Generator: grunt-wp-i18n 0.4.9\n"
 
-#: bridgy-publish.php:19
-msgid "Bridgy Publish Requires the WordPress Webmention Plugin"
+#: bridgy-publish.php:18
+msgid "Bridgy Publish Requires a Webmention Plugin"
 msgstr ""
 
-#: includes/class-bridgy-config.php:13
+#: includes/class-bridgy-config.php:10
 msgid "Options"
 msgstr ""
 
-#: includes/class-bridgy-config.php:14
+#: includes/class-bridgy-config.php:11
 msgid "Enable Twitter Option"
 msgstr ""
 
-#: includes/class-bridgy-config.php:15
+#: includes/class-bridgy-config.php:12
 msgid "Enable Facebook Option"
 msgstr ""
 
-#: includes/class-bridgy-config.php:16
-msgid "Enable Instagram Option"
+#: includes/class-bridgy-config.php:13
+msgid "Enable Flickr Option"
 msgstr ""
 
-#: includes/class-bridgy-config.php:17
+#: includes/class-bridgy-config.php:15
+msgid "Default to Checked"
+msgstr ""
+
+#: includes/class-bridgy-config.php:19
 msgid "Disable Link Back to Post"
 msgstr ""
 
-#: includes/class-bridgy-config.php:18
+#: includes/class-bridgy-config.php:20
 msgid "Ignore Formatting"
 msgstr ""
 
-#: includes/class-bridgy-config.php:20
+#: includes/class-bridgy-config.php:22
 msgid "Send Shortlinks insted of Full URL"
+msgstr ""
+
+#: includes/class-bridgy-config.php:29 includes/class-bridgy-config.php:32
+msgid "bridgy-publish"
 msgstr ""
 
 #. Plugin Name of the plugin/theme
 msgid "Bridgy Publish"
 msgstr ""
 
-#: includes/class-bridgy-config.php:58
+#: includes/class-bridgy-config.php:59
 msgid "Adds support for publishing through Bridgy"
 msgstr ""
 
-#: includes/class-bridgy-postmeta.php:28
+#: includes/class-bridgy-postmeta.php:26
 msgid "Bridgy Publish To"
 msgstr ""
 
@@ -73,17 +81,37 @@ msgstr ""
 msgid "http://david.shanske.com"
 msgstr ""
 
-#: includes/class-bridgy-postmeta.php:39
-msgctxt "Bridgy Publish"
+#: includes/class-bridgy-postmeta.php:37
+msgctxt "bridgy-publish"
 msgid "Twitter"
 msgstr ""
 
-#: includes/class-bridgy-postmeta.php:40
-msgctxt "Bridgy Publish"
+#: includes/class-bridgy-postmeta.php:38
+msgctxt "bridgy-publish"
 msgid "Facebook"
 msgstr ""
 
-#: includes/class-bridgy-postmeta.php:41
-msgctxt "Bridgy Publish"
-msgid "Instagram"
+#: includes/class-bridgy-postmeta.php:39
+msgctxt "bridgy-publish"
+msgid "Flickr"
+msgstr ""
+
+#: includes/class-bridgy-postmeta.php:53
+msgctxt "bridgy-publish"
+msgid "Never"
+msgstr ""
+
+#: includes/class-bridgy-postmeta.php:54
+msgctxt "bridgy-publish"
+msgid "Always"
+msgstr ""
+
+#: includes/class-bridgy-postmeta.php:55
+msgctxt "bridgy-publish"
+msgid "Maybe"
+msgstr ""
+
+#: includes/class-bridgy-postmeta.php:88
+msgctxt "bridgy-publish"
+msgid "omit backlink"
 msgstr ""

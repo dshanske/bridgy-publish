@@ -23,7 +23,7 @@ class Bridgy_Postmeta {
 	public static function add_postmeta_boxes() {
 		add_meta_box(
 			'bridgybox-meta',      // Unique ID
-			esc_html__( 'Bridgy Publish To', 'Bridgy Publish' ),    // Title
+			esc_html__( 'Bridgy Publish To', 'bridgy-publish' ),    // Title
 			array( 'Bridgy_Postmeta', 'metabox' ),   // Callback function
 			'post',         // Admin page (or post type)
 			'side',         // Context
@@ -34,13 +34,13 @@ class Bridgy_Postmeta {
 	public static function bridgy_checkboxes() {
 		$options = get_option( 'bridgy_options' );
 		$bridgy_checkboxes = array(
-						'twitter' => _x( 'Twitter', 'Bridgy Publish' ),
-						'facebook' => _x( 'Facebook', 'Bridgy Publish' ),
-						'flickr' => _x( 'Flickr', 'Bridgy Publish' ),
+						'twitter' => _x( 'Twitter', 'bridgy-publish' ),
+						'facebook' => _x( 'Facebook', 'bridgy-publish' ),
+						'flickr' => _x( 'Flickr', 'bridgy-publish' ),
 						);
 		if ( $options ) {
 			foreach ( $options as $key => $value ) {
-				if ( 0 == $options[ $key ] ) {
+				if ( 0 === $options[ $key ] ) {
 					unset( $bridgy_checkboxes[ $key ] );
 				}
 			}
@@ -48,11 +48,11 @@ class Bridgy_Postmeta {
 		return $bridgy_checkboxes;
 	}
 
-	public static function bridgy_backlink_options(){
+	public static function bridgy_backlink_options() {
 		$bridgy_backlink_options = array(
-				'' => _x( "Never", 'Bridgy Publish' ),
-				'true' => _x( "Always", 'Bridgy Publish' ),
-				'maybe'  => _x( "Maybe", 'Bridgy Publish' )
+				'' => _x( 'Never', 'bridgy-publish' ),
+				'true' => _x( 'Always', 'bridgy-publish' ),
+				'maybe'  => _x( 'Maybe', 'bridgy-publish' ),
 			);
 		return $bridgy_backlink_options;
 	}
@@ -75,17 +75,17 @@ class Bridgy_Postmeta {
 		echo '</ul>';
 
 		$bridgy_backlink_options = self::bridgy_backlink_options();
-		$bridgy_backlink_meta = get_post_meta(get_the_ID(), '_bridgy_backlink_options',true);
+		$bridgy_backlink_meta = get_post_meta( get_the_ID(), '_bridgy_backlink_options',true );
 		echo '<select name="bridgy_backlink_option" id="bridgy_backlink_option">';
-		foreach ($bridgy_backlink_options as $key => $value) {
+		foreach ( $bridgy_backlink_options as $key => $value ) {
 			$selected = '';
-			if($bridgy_backlink_meta['bridgy_backlink_option'] == $key){
+			if ( $bridgy_backlink_meta['bridgy_backlink_option'] === $key ) {
 				$selected = 'selected';
 			}
 			echo '<option value="' . $key . '" ' . $selected . '>' . $value . '</option>';
 		}
 		echo '</select>';
-		echo '<label for="bridgy_backlink_option">' . _x('omit backlink','Bridgy Publish') . '</label>';
+		echo '<label for="bridgy_backlink_option">' . _x( 'omit backlink','bridgy-publish' ) . '</label>';
 	}
 
 	/* Save the meta box's post metadata. */
@@ -110,12 +110,11 @@ class Bridgy_Postmeta {
 		}
 
 		// Check the user's permissions.
-		if ( isset( $_POST['post_type'] ) && 'page' == $_POST['post_type'] ) {
+		if ( isset( $_POST['post_type'] ) && 'page' === $_POST['post_type'] ) {
 			if ( ! current_user_can( 'edit_page', $post_id ) ) {
 				return;
 			}
-		}
-  		else {
+		} else {
 			if ( ! current_user_can( 'edit_post', $post_id ) ) {
 				return;
 			}
@@ -123,31 +122,31 @@ class Bridgy_Postmeta {
 		$bridgy_checkboxes = self::bridgy_checkboxes();
 		$bridgy = array();
 		/* OK, its safe for us to save the data now. */
-		foreach ($bridgy_checkboxes as $key => $value) {
-			if (isset( $_POST['bridgy_'.$key]) ) {
-				$bridgy[$key]= 'yes';
+		foreach ( $bridgy_checkboxes as $key => $value ) {
+			if ( isset( $_POST['bridgy_'.$key] ) ) {
+				$bridgy[$key] = 'yes';
 			}
 		}
-		if(!empty($bridgy)) {
-			update_post_meta( $post_id,'_bridgy_options', $bridgy);
+		if ( ! empty( $bridgy ) ) {
+			update_post_meta( $post_id,'_bridgy_options', $bridgy );
 		}
 
 		$bridgy_backlink = array();
 		$bridgy_backlink_options = self::bridgy_backlink_options();
-		if( isset( $_POST['bridgy_backlink_option']) ){
-			foreach($bridgy_backlink_options as $key => $value){
-				if($_POST['bridgy_backlink_option'] == $key){
+		if ( isset( $_POST['bridgy_backlink_option'] ) ) {
+			foreach ( $bridgy_backlink_options as $key => $value ) {
+				if ( $key === $_POST['bridgy_backlink_option'] ) {
 					$bridgy_backlink['bridgy_backlink_option'] = $key;
 				}
 			}
 		}
-		if(!empty($bridgy_backlink)) {
-			update_post_meta( $post_id,'_bridgy_backlink_options', $bridgy_backlink);
+		if ( ! empty( $bridgy_backlink ) ) {
+			update_post_meta( $post_id,'_bridgy_backlink_options', $bridgy_backlink );
 		}
 	}
 
 	public static function transition_post_status($new, $old, $post) {
-		if ( 'publish' == $new && 'publish' != $old ) {
+		if ( ( 'publish' === $new ) && ( 'publish' !== $old ) ) {
 			self::save_post( $post->ID,$post );
 		}
 		$bridgy = get_post_meta( $post->ID, '_bridgy_options', true );
@@ -156,7 +155,7 @@ class Bridgy_Postmeta {
 			$syn = explode( "\n", $syn );
 		}
 		$options = get_option( 'bridgy_options' );
-		if ( 1 == $options['shortlinks'] ) {
+		if ( 1 === $options['shortlinks'] ) {
 			$url = wp_get_shortlink( $post->ID );
 		} else {
 			$url = get_permalink( $post->ID );
@@ -167,10 +166,10 @@ class Bridgy_Postmeta {
 				$response = send_webmention( $url, 'https://www.brid.gy/publish/' . $key );
 				$response_code = wp_remote_retrieve_response_code( $response );
 				$json = json_decode( $response['body'] );
-				if ( 201 == $response_code ) {
+				if ( 201 === $response_code ) {
 					$syn[] = $json->url;
 				}
-				if ( (400 == $response_code)||(500 == $response_code) ) {
+				if ( (400 === $response_code)||(500 === $response_code) ) {
 					error_log( 'Bridgy Publish Error: ' . $json->error );
 				} else {
 					if ( WP_DEBUG ) {
@@ -194,20 +193,20 @@ class Bridgy_Postmeta {
 		$publish = '';
 		$options = get_option( 'bridgy_options' );
 		$classes = array();
-		if ( 1 == $options['omitlink'] ) {
+		if ( 1 === $options['omitlink'] ) {
 			$classes[] = 'u-bridgy-omit-link';
 		}
-		if ( 1 == $options['ignoreformatting'] ) {
+		if ( 1 === $options['ignoreformatting'] ) {
 			$classes[] = 'u-bridgy-ignore-formatting';
 		}
 		$class = implode( ' ', $classes );
 		foreach ( $bridgy as $key => $value ) {
 			$publish .= '<a class="' . $class . '" href="https://www.brid.gy/publish/' . $key . '"></a>';
 		}
-		$bridgy_backlink_option = get_post_meta(get_the_ID(), '_bridgy_backlink_options', true);
-		if(count($bridgy_backlink_option)>0){
-			foreach($bridgy_backlink_option as $key => $value){
-				if( $value != ''){
+		$bridgy_backlink_option = get_post_meta( get_the_ID(), '_bridgy_backlink_options', true );
+		if ( count( $bridgy_backlink_option ) > 0 ) {
+			foreach ( $bridgy_backlink_option as $key => $value ) {
+				if ( '' !== $value ) {
 					$publish .= '<data class="p-bridgy-omit-link" value="' . $value . '"></data>';
 				}
 			}

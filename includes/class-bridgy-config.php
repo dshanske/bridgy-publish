@@ -6,6 +6,7 @@ class Bridgy_Config {
 	public static function admin_init() {
 		$options = get_option( 'bridgy_options' );
 		register_setting( 'bridgy_options', 'bridgy_options' );
+
 		add_settings_section( 'bridgy-content', __( 'Options', 'Bridgy Publish' ), array( 'Bridgy_Config', 'options_callback' ), 'bridgy_options' );
 		add_settings_field( 'twitter', __( 'Enable Twitter Option', 'Bridgy Publish' ), array( 'Bridgy_Config', 'checkbox_callback' ), 'bridgy_options', 'bridgy-content' ,  array( 'name' => 'twitter' ) );
 		add_settings_field( 'facebook', __( 'Enable Facebook Option', 'Bridgy Publish' ), array( 'Bridgy_Config', 'checkbox_callback' ), 'bridgy_options', 'bridgy-content' ,  array( 'name' => 'facebook' ) );
@@ -29,14 +30,13 @@ class Bridgy_Config {
 			'Bridgy Publish' ), 'manage_options', 'bridgy_options', array( 'Bridgy_Config', 'options_form' ) );
 		} else {
 			add_options_page( '', __( 'Bridgy Publish', 'Bridgy Publish' ), 'manage_options', 'bridgy_options', array( 'Bridgy_Config', 'options_form' ) );
-
 		}
 	}
 
 	public static function settings_link( $links ) {
 		$settings_link = '<a href="options-general.php?page=bridgy_options">Settings</a>';
 		array_unshift( $links, $settings_link );
-			return $links;
+		return $links;
 	}
 
 	public static function options_callback() {
@@ -53,12 +53,13 @@ class Bridgy_Config {
 
 	public static function options_form() {
 		echo '<div class="wrap">';
+
 		echo '<h2>' . __( 'Bridgy Publish', 'Bridgy Publish' ) . '</h2>';
 		echo '<p>';
 		esc_html_e( 'Adds support for publishing through Bridgy', 'Bridgy Publish' );
 		echo '</p><hr />';
 		echo '<form method="post" action="options.php">';
-			settings_fields( 'bridgy_options' );
+		settings_fields( 'bridgy_options' );
 		do_settings_sections( 'bridgy_options' );
 		submit_button();
 		echo '</form></div>';

@@ -14,9 +14,9 @@ add_action( 'admin_notices', 'bridgy_plugin_notice' );
 function bridgy_plugin_notice() {
 	if ( ! function_exists( 'send_webmention' ) ) {
 		echo '<div class="error"><p>';
-			echo '<a href="https://wordpress.org/plugins/webmention/">';
-			esc_html_e( 'Bridgy Publish Requires a Webmention Plugin', 'Bridgy Publish' );
-			echo '</a></p></div>';
+		echo '<a href="https://wordpress.org/plugins/webmention/">';
+		esc_html_e( 'Bridgy Publish Requires a Webmention Plugin', 'Bridgy Publish' );
+		echo '</a></p></div>';
 	}
 }
 
@@ -27,7 +27,6 @@ function bridgy_plugin_init() {
 	require_once( plugin_dir_path( __FILE__ ) . 'includes/class-bridgy-config.php' );
 	add_action( 'admin_init', array( 'Bridgy_Config', 'admin_init' ) );
 	add_action( 'admin_menu', array( 'Bridgy_Config', 'admin_menu' ), 13 );
-
 
 	// Post Meta Class
 	require_once( plugin_dir_path( __FILE__ ) . 'includes/class-bridgy-postmeta.php' );

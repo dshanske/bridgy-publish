@@ -13,7 +13,10 @@ class Bridgy_Postmeta {
 		add_action( 'do_bridgy', array( 'Bridgy_Postmeta', 'send_bridgy' ) );
 
 		add_filter( 'the_content', array( 'Bridgy_Postmeta', 'the_content' ) );
+		// Syndication Link Backcompat
 		add_filter( 'syn_add_links', array( 'Bridgy_Postmeta', 'syn_add_links' ) );
+		// Micropub Syndication Targets
+		add_filter( 'micropub_syndicate-to', array( 'Bridgy_Postmeta', 'syndicate_to' ), 10, 2 );
 
 		$args = array(
 			'sanitize_callback' => 'sanitize_text_field',
@@ -188,7 +191,9 @@ class Bridgy_Postmeta {
 		;
 	}
 
-
+	public static function str_prefix( $source, $prefix ) {
+		return strncmp( $source, $prefix, strlen( $prefix ) ) === 0;
+	}
 
 	public static function services( $post_id ) {
 		$services = array(
@@ -196,6 +201,14 @@ class Bridgy_Postmeta {
 			get_post_meta( $post_id, '_bridgy_facebook', true ) === 'yes' ? 'facebook' : null,
 			get_post_meta( $post_id, '_bridgy_flickr', true ) === 'yes' ? 'flickr' : null,
 		);
+		$syndicates = get_post_meta( $post_id, 'mf2_syndicate-to' );
+		if ( is_array( $syndicates ) ) {
+			foreach ( $syndicates as $syndicate ) {
+				if ( self::str_prefix( $syndicate, 'bridgy_' ) ) {
+					$services[] = str_replace( 'bridgy_', '', $syndicate );
+				}
+			}
+		}
 		return array_filter( $services );
 	}
 
@@ -271,6 +284,19 @@ class Bridgy_Postmeta {
 			$publish .= '<data class="p-bridgy-omit-link" value="' . $backlink_option . '"></data>';
 		}
 		return $content . $publish;
+	}
+
+	public static function syndicate_to( $targets, $user_id ) {
+		$services = Bridgy_Config::service_options();
+		foreach ( $services as $key => $value ) {
+			if ( get_option( 'bridgy_' . $key ) ) {
+				$targets[] = array(
+					'uid' => 'bridgy_'. $key,
+					'name' => sprintf( __( '%1$s via Bridgy', 'bridgy-publish' ), $value ),
+				);
+			}
+		}
+		return $targets;
 	}
 
 	public static function syn_add_links($urls) {

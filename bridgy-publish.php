@@ -3,7 +3,7 @@
  * Plugin Name: Bridgy Publish
  * Plugin URI: https://github.com/dshanske/bridgy-publish
  * Description: Bridgy Publish for WordPress
- * Version: 1.1.1
+ * Version: 1.2.0
  * Author: David Shanske
  * Author URI: http://david.shanske.com
  * Text Domain: bridgy-publish
@@ -26,7 +26,7 @@ function bridgy_plugin_init() {
 	load_plugin_textdomain( 'bridgy-publish', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 	// Config Class
 	require_once( plugin_dir_path( __FILE__ ) . 'includes/class-bridgy-config.php' );
-	add_action( 'admin_init', array( 'Bridgy_Config', 'admin_init' ) );
+	add_action( 'admin_init', array( 'Bridgy_Config', 'init' ) );
 	add_action( 'admin_menu', array( 'Bridgy_Config', 'admin_menu' ), 13 );
 
 	// Post Meta Class

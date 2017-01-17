@@ -269,11 +269,11 @@ class Bridgy_Postmeta {
 		$link = '<a class="%1$s" href="https://www.brid.gy/publish/%2$s"></a>';
 
 		$services = array(
-			get_post_meta( $ID, '_bridgy_twitter', true ) ? 'twitter' : null,
-			get_post_meta( $ID, '_bridgy_facebook', true ) ? 'facebook' : null,
-			get_post_meta( $ID, '_bridgy_flickr', true ) ? 'flickr' : null,
+			get_post_meta( $ID, '_bridgy_twitter', true ) === 'yes' ? 'twitter' : null,
+			get_post_meta( $ID, '_bridgy_facebook', true ) === 'yes' ? 'facebook' : null,
+			get_post_meta( $ID, '_bridgy_flickr', true ) === 'yes' ? 'flickr' : null,
 		);
-		$services = array_unique( $services );
+		$services = array_filter( $services );
 
 		foreach ( $services as $service ) {
 			$publish .= sprintf( $link, $class, $service );

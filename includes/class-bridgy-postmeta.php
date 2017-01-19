@@ -10,7 +10,7 @@ class Bridgy_Postmeta {
 
 		add_action( 'save_post', array( 'Bridgy_Postmeta', 'save_post' ), 8, 2 );
 		add_action( 'publish_post', array( 'Bridgy_Postmeta', 'publish_post' ) );
-		add_action( 'do_bridgy', array( 'Bridgy_Postmeta', 'send_bridgy' ) );
+		add_action( 'do_bridgy', array( 'Bridgy_Postmeta', 'send_bridgy' ), 10, 1 );
 
 		add_filter( 'the_content', array( 'Bridgy_Postmeta', 'the_content' ) );
 		// Syndication Link Backcompat
@@ -28,31 +28,13 @@ class Bridgy_Postmeta {
 		register_meta( 'post', '_bridgy_backlink', $args );
 
 		$args = array(
-			'sanitize_callback' => 'sanitize_text_field',
-			'type' => 'string',
-			'description' => 'Brid.gy Post to Twitter',
-			'single' => true,
+		//	'sanitize_callback' => '',
+			'type' => 'array',
+			'description' => 'Syndicate To',
+			'single' => false,
 			'show_in_rest' => false,
 		);
-		register_meta( 'post', '_bridgy_twitter', $args );
-
-		$args = array(
-			'sanitize_callback' => 'sanitize_text_field',
-			'type' => 'string',
-			'description' => 'Brid.gy Post to Facebook',
-			'single' => true,
-			'show_in_rest' => false,
-		);
-		register_meta( 'post', '_bridgy_facebook', $args );
-
-		$args = array(
-			'sanitize_callback' => 'sanitize_text_field',
-			'type' => 'string',
-			'description' => 'Brid.gy Post to Flickr',
-			'single' => true,
-			'show_in_rest' => false,
-		);
-		register_meta( 'post', '_bridgy_flickr', $args );
+		register_meta( 'post', 'mf2_syndicate-to', $args );
 
 	}
 
@@ -77,21 +59,22 @@ class Bridgy_Postmeta {
 	public static function bridgy_checkboxes( $post_ID ) {
 		$services = Bridgy_Config::service_options();
 		$string = '<ul>';
+		$meta = get_post_meta( $post_ID, 'mf2_syndicate-to' );
+		if ( is_array( $meta[0] ) ) {
+			$meta = $meta[0];
+		}
 		foreach ( $services as $key => $value ) {
 			$service = get_option( 'bridgy_' . $key );
 			if ( '' === $service ) {
 				continue;
 			}
-			$meta = get_post_meta( $post_ID, '_bridgy_' . $key, true );
 			$string .= '<li>';
-			$string .= '<input type="hidden" name="bridgy_' . $key . '" value="no" />';
-			$string .= '<input type="checkbox" name="bridgy_' . $key . '"';
-			$string .= ' value="yes"';
-
+			$string .= '<input type="checkbox" name="mf2_syndicate-to[]"';
+			$string .= ' value="bridgy-publish_' . $key . '"';
 			if ( ! $meta ) {
 				$string .= checked( $service, 'checked', false );
 			} else {
-				$string .= checked( $meta, 'yes', false );
+				$string .= in_array( 'bridgy-publish_' . $key , $meta ) ? ' checked' : '';
 			}
 
 			$string .= ' />';
@@ -159,13 +142,10 @@ class Bridgy_Postmeta {
 				return;
 			}
 		}
-		$services = Bridgy_Config::service_options();
-		/* OK, its safe for us to save the data now. */
-		foreach ( $services as $key => $value ) {
-			if ( isset( $_POST[ 'bridgy_'.$key ] ) ) {
-				update_post_meta( $post_id, '_bridgy_' . $key, $_POST[ 'bridgy_'.$key ] );
 
-			}
+		/* OK, its safe for us to save the data now. */
+		if ( ! empty( $_POST[ 'mf2_syndicate-to' ] ) ) {
+			update_post_meta( $post_id, 'mf2_syndicate-to', $_POST[ 'mf2_syndicate-to' ] );
 		}
 
 		if ( isset( $_POST['bridgy_backlink'] ) ) {
@@ -192,21 +172,24 @@ class Bridgy_Postmeta {
 	}
 
 	public static function str_prefix( $source, $prefix ) {
+		if ( ! is_string( $source ) || ! is_string( $prefix ) ) {
+			return false;
+		}
 		return strncmp( $source, $prefix, strlen( $prefix ) ) === 0;
 	}
 
 	public static function services( $post_id ) {
-		$services = array(
-			get_post_meta( $post_id, '_bridgy_twitter', true ) === 'yes' ? 'twitter' : null,
-			get_post_meta( $post_id, '_bridgy_facebook', true ) === 'yes' ? 'facebook' : null,
-			get_post_meta( $post_id, '_bridgy_flickr', true ) === 'yes' ? 'flickr' : null,
-		);
-		$syndicates = get_post_meta( $post_id, 'mf2_syndicate-to' );
-		if ( is_array( $syndicates ) ) {
-			foreach ( $syndicates as $syndicate ) {
-				if ( self::str_prefix( $syndicate, 'bridgy_' ) ) {
-					$services[] = str_replace( 'bridgy_', '', $syndicate );
-				}
+		$metas = get_post_meta( $post_id, 'mf2_syndicate-to' );
+		if ( ! $metas ) {
+			return array();
+		}
+		if ( is_array( $metas[0] ) ) {
+			$metas = $metas[0];
+		}
+		$services = array();
+		foreach ( $metas as $meta ) {
+			if ( self::str_prefix( $meta, 'bridgy-publish_' ) ) {
+				$services[] = str_replace( 'bridgy-publish_', '', $meta );
 			}
 		}
 		return array_filter( $services );
@@ -216,8 +199,14 @@ class Bridgy_Postmeta {
 		wp_schedule_single_event( time() + wp_rand( 5, 10 ), 'do_bridgy', array( $post_id ) );
 	}
 
-	public static function send_bridgy( $post_id ) {
+	public static function send_bridgy( $post_id = null ) {
+		if ( ! $post_id ) {
+			$post_id = get_the_ID();
+		}
 		$services = self::services( $post_id );
+		if ( ! $services ) {
+			return;
+		}
 
 		 /* OK, its safe for us to save the data now. */
 
@@ -227,40 +216,36 @@ class Bridgy_Postmeta {
 			$url = get_permalink( $post_id );
 		}
 		$returns = array();
-		if ( ! empty( $services ) ) {
-			foreach ( $services as $service ) {
-				$response = self::send_webmention( $url, $service );
-				if ( ! is_wp_error( $response ) ) {
-					$returns[] = $response;
-				} else {
-					$data = $response->get_error_data();
-					error_log( 'Bridgy Publish Error(' . $data['status'] . '): ' . $response->get_error_message() );
-				}
+		foreach ( $services as $service ) {
+			$response = self::send_webmention( $url, $service );
+			if ( ! is_wp_error( $response ) ) {
+				$returns[] = $response;
+			} else {
+				$data = $response->get_error_data();
+				error_log( 'Bridgy Publish Error(' . $data['status'] . '): ' . $response->get_error_message() );
 			}
-			if ( empty( $returns ) ) {
-				return;
-			}
-			if ( WP_DEBUG ) {
-				error_log( 'Bridgy Publish Debug: ' . serialize( $returns ) );
-			}
-			$syn = get_post_meta( $post_id, 'mf2_syndication' );
-			if ( ! $syn ) {
-				add_post_meta( $post_id, 'mf2_syndication', $returns );
-				return;
-			}
-
-			$syn = array_merge( $returns, $syn );
-			$syn = array_unique( array_filter( $syn ) );
-			if ( ! empty( $syn ) ) {
-				update_post_meta( $post_id, 'mf2_syndication', $syn );
-			}
+		}
+		if ( empty( $returns ) ) {
+			return;
+		}
+		if ( WP_DEBUG ) {
+			error_log( 'Bridgy Publish Debug: ' . serialize( $returns ) );
+		}
+		$syn = get_post_meta( $post_id, 'mf2_syndication' );
+		if ( ! $syn ) {
+			add_post_meta( $post_id, 'mf2_syndication', $returns );
+			return;
+		}
+		$syn = array_merge( $returns, $syn );
+		$syn = array_unique( array_filter( $syn ) );
+		if ( ! empty( $syn ) ) {
+			update_post_meta( $post_id, 'mf2_syndication', $syn );
 		}
 	}
 
 	public static function the_content($content) {
 		$publish = '';
 		$classes = array();
-		$ID = get_the_ID();
 
 		if ( 1 === get_option( 'bridgy_ignoreformatting' ) ) {
 			$classes[] = 'u-bridgy-ignore-formatting';
@@ -268,12 +253,7 @@ class Bridgy_Postmeta {
 		$class = implode( ' ', $classes );
 		$link = '<a class="%1$s" href="https://www.brid.gy/publish/%2$s"></a>';
 
-		$services = array(
-			get_post_meta( $ID, '_bridgy_twitter', true ) === 'yes' ? 'twitter' : null,
-			get_post_meta( $ID, '_bridgy_facebook', true ) === 'yes' ? 'facebook' : null,
-			get_post_meta( $ID, '_bridgy_flickr', true ) === 'yes' ? 'flickr' : null,
-		);
-		$services = array_filter( $services );
+		$services = self::services( get_the_ID() );
 
 		foreach ( $services as $service ) {
 			$publish .= sprintf( $link, $class, $service );
@@ -291,8 +271,8 @@ class Bridgy_Postmeta {
 		foreach ( $services as $key => $value ) {
 			if ( get_option( 'bridgy_' . $key ) ) {
 				$targets[] = array(
-					'uid' => 'bridgy_'. $key,
-					'name' => sprintf( __( '%1$s via Bridgy', 'bridgy-publish' ), $value ),
+					'uid' => 'bridgy-publish_'. $key,
+					'name' => sprintf( __( '%1$s via Bridgy Publish', 'bridgy-publish' ), $value ),
 				);
 			}
 		}

@@ -33,6 +33,7 @@ for the features of the service prior to submission.
 	* Redo Settings Page and allow default to checked to be on a per-service basis.
 	* Publish Now Works Off of a Cron Job Hook 5-10 seconds after the post is published
 	* Support for Setting and Being Triggered by Micropub Syndication Requests
+	* Storage of Syndication Preferences now stored in `mf2_` microformats 2 properties
 
 ### Version 1.1.1 ###
 	* Fix compatibility with changes in Syndication Links and change storage to array from EOL separated string

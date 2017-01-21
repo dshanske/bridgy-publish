@@ -41,7 +41,7 @@ module.exports = function(grunt) {
             options: {
 		mainFile: 'bridgy-publish.php', // Main project file.
                 domainPath: '/languages',                   // Where to save the POT file.
-                potFilename: 'semantics.pot',
+                potFilename: 'bridgy.pot',
                 type: 'wp-plugin',                // Type of project (wp-plugin or wp-theme).
             exclude: [
                 'build/.*'

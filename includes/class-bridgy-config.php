@@ -82,6 +82,17 @@ class Bridgy_Config {
 			)
 		);
 
+		register_setting(
+			'bridgy-options', // settings page
+			'bridgy_twitterexcerpt', // option name
+			array( 
+				'type' => 'boolean',
+				'description' => 'Set Twitter Post from Excerpt',
+				'show_in_rest' => true,
+				'default' => '0'
+			)
+		);
+
 		add_settings_section(
 			'bridgy-content',
 			__( 'Options', 'bridgy-publish' ),
@@ -158,6 +169,18 @@ class Bridgy_Config {
 				'name' => 'bridgy_shortlinks',
 			)
 		);
+
+		add_settings_field(
+			'twitterexcerpt',
+			__( 'Set Twitter from Post Excerpt', 'bridgy-publish' ),
+			array( 'Bridgy_Config', 'checkbox_callback' ),
+			'bridgy-options',
+			'bridgy-content',
+			array(
+				'name' => 'bridgy_twitterexcerpt',
+			)
+		);
+
 	}
 
 	public static function admin_menu() {

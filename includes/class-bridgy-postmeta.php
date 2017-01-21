@@ -144,8 +144,8 @@ class Bridgy_Postmeta {
 		}
 
 		/* OK, its safe for us to save the data now. */
-		if ( ! empty( $_POST[ 'mf2_syndicate-to' ] ) ) {
-			update_post_meta( $post_id, 'mf2_syndicate-to', $_POST[ 'mf2_syndicate-to' ] );
+		if ( ! empty( $_POST['mf2_syndicate-to'] ) ) {
+			update_post_meta( $post_id, 'mf2_syndicate-to', $_POST['mf2_syndicate-to'] );
 		}
 
 		if ( isset( $_POST['bridgy_backlink'] ) ) {
@@ -262,6 +262,9 @@ class Bridgy_Postmeta {
 		$backlink_option = get_post_meta( get_the_ID(), '_bridgy_backlink_options', true );
 		if ( '' !== $backlink_option ) {
 			$publish .= '<data class="p-bridgy-omit-link" value="' . $backlink_option . '"></data>';
+		}
+		if ( ( '1' === get_option( 'bridgy_twitterexcerpt' ) ) && has_excerpt() ) {
+			$publish .= '<p="p-bridgy-twitter-content" style="display:none"' . get_the_excerpt() . '</p>';
 		}
 		return $content . $publish;
 	}

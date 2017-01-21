@@ -34,6 +34,7 @@ for the features of the service prior to submission.
 	* Publish Now Works Off of a Cron Job Hook 5-10 seconds after the post is published
 	* Support for Setting and Being Triggered by Micropub Syndication Requests
 	* Storage of Syndication Preferences now stored in `mf2_` microformats 2 properties
+	* Optionally set the Twitter post based on the post excerpt
 
 ### Version 1.1.1 ###
 	* Fix compatibility with changes in Syndication Links and change storage to array from EOL separated string

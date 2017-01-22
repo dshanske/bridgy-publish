@@ -210,11 +210,12 @@ class Bridgy_Postmeta {
 
 		 /* OK, its safe for us to save the data now. */
 
-		if ( '1' === get_option( 'bridgy_shortlinks' ) ) {
-			$url = wp_get_shortlink( $post_id );
-		} else {
+		if ( '0' === get_option( 'bridgy_shortlinks' ) ) {
 			$url = get_permalink( $post_id );
+		} else {
+			$url = wp_get_shortlink( $post_id );
 		}
+
 		$returns = array();
 		foreach ( $services as $service ) {
 			$response = self::send_webmention( $url, $service );
@@ -247,7 +248,7 @@ class Bridgy_Postmeta {
 		$publish = '';
 		$classes = array();
 
-		if ( 1 === get_option( 'bridgy_ignoreformatting' ) ) {
+		if ( '1' === get_option( 'bridgy_ignoreformatting' ) ) {
 			$classes[] = 'u-bridgy-ignore-formatting';
 		}
 		$class = implode( ' ', $classes );
@@ -259,9 +260,11 @@ class Bridgy_Postmeta {
 			$publish .= sprintf( $link, $class, $service );
 		}
 
-		$backlink_option = get_post_meta( get_the_ID(), '_bridgy_backlink_options', true );
-		if ( '' !== $backlink_option ) {
-			$publish .= '<data class="p-bridgy-omit-link" value="' . $backlink_option . '"></data>';
+		if ( ! $backlink = get_post_meta( get_the_ID(), '_bridgy_backlink', true ) ) {
+			$backlink = get_option( 'bridgy_backlink' );
+		}
+		if ( '' !== $backlink ) {
+			$publish .= '<data class="p-bridgy-omit-link" value="' . $backlink . '"></data>';
 		}
 		if ( ( '1' === get_option( 'bridgy_twitterexcerpt' ) ) && has_excerpt() ) {
 			$publish .= '<p="p-bridgy-twitter-content" style="display:none"' . get_the_excerpt() . '</p>';

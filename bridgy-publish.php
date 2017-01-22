@@ -3,7 +3,7 @@
  * Plugin Name: Bridgy Publish
  * Plugin URI: https://github.com/dshanske/bridgy-publish
  * Description: Bridgy Publish for WordPress
- * Version: 1.2.0
+ * Version: 1.2.1
  * Author: David Shanske
  * Author URI: http://david.shanske.com
  * Text Domain: bridgy-publish

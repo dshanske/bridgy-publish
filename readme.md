@@ -1,7 +1,7 @@
 # Bridgy Publish #
 **Contributors:** dshanske  
 **Tags:** indieweb, POSSE, bridgy  
-**Stable tag:** 1.2.0  
+**Stable tag:** 1.2.1  
 **Requires at least:** 4.7  
 **Tested up to:** 4.7.1  
 **License:** GPLv2 or later  
@@ -27,6 +27,9 @@ for the features of the service prior to submission.
 
 
 ## Changelog ##
+
+### Version 1.2.1 ###
+	* Omit Links option not set on Micropub so will now pull from the default setting if the post setting is not enabled
 
 ### Version 1.2.0 ###
 	* Add per post support for Bridgy backlink settings. Credit to @iamwebrocker for addition

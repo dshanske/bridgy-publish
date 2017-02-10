@@ -85,11 +85,11 @@ class Bridgy_Config {
 		register_setting(
 			'bridgy-options', // settings page
 			'bridgy_twitterexcerpt', // option name
-			array( 
+			array(
 				'type' => 'boolean',
 				'description' => 'Set Twitter Post from Excerpt',
 				'show_in_rest' => true,
-				'default' => '0'
+				'default' => '0',
 			)
 		);
 
@@ -226,7 +226,7 @@ class Bridgy_Config {
 		return array(
 			'' => _x( 'Disable', 'bridgy-publish' ),
 			'true' => _x( 'Enabled', 'bridgy-publish' ),
-			'checked'  => _x( 'Checked by Default', 'bridgy-publish' ),
+			'checked'  => _x( 'Checked by Default in Add Post', 'bridgy-publish' ),
 		);
 	}
 

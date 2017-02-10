@@ -28,6 +28,9 @@ for the features of the service prior to submission.
 
 ## Changelog ##
 
+### Version 1.2.2 ###
+	* Switch adding publish links to content to adding to footer
+
 ### Version 1.2.1 ###
 	* Omit Links option not set on Micropub so will now pull from the default setting if the post setting is not enabled
 

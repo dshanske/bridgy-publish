@@ -12,7 +12,7 @@ class Bridgy_Postmeta {
 		add_action( 'publish_post', array( 'Bridgy_Postmeta', 'publish_post' ) );
 		add_action( 'do_bridgy', array( 'Bridgy_Postmeta', 'send_bridgy' ), 10, 1 );
 
-		add_filter( 'the_content', array( 'Bridgy_Postmeta', 'the_content' ) );
+		add_action( 'wp_footer', array( 'Bridgy_Postmeta', 'wp_footer' ) );
 		// Syndication Link Backcompat
 		add_filter( 'syn_add_links', array( 'Bridgy_Postmeta', 'syn_add_links' ) );
 		// Micropub Syndication Targets
@@ -244,8 +244,7 @@ class Bridgy_Postmeta {
 		}
 	}
 
-	public static function the_content($content) {
-		$publish = '';
+	public static function wp_footer() {
 		$classes = array();
 
 		if ( '1' === get_option( 'bridgy_ignoreformatting' ) ) {
@@ -257,19 +256,18 @@ class Bridgy_Postmeta {
 		$services = self::services( get_the_ID() );
 
 		foreach ( $services as $service ) {
-			$publish .= sprintf( $link, $class, $service );
+			printf( $link, $class, $service );
 		}
 
 		if ( ! $backlink = get_post_meta( get_the_ID(), '_bridgy_backlink', true ) ) {
 			$backlink = get_option( 'bridgy_backlink' );
 		}
 		if ( '' !== $backlink ) {
-			$publish .= '<data class="p-bridgy-omit-link" value="' . $backlink . '"></data>';
+			echo '<data class="p-bridgy-omit-link" value="' . $backlink . '"></data>';
 		}
 		if ( ( '1' === get_option( 'bridgy_twitterexcerpt' ) ) && has_excerpt() ) {
-			$publish .= '<p="p-bridgy-twitter-content" style="display:none"' . get_the_excerpt() . '</p>';
+			echo '<p="p-bridgy-twitter-content" style="display:none"' . get_the_excerpt() . '</p>';
 		}
-		return $content . $publish;
 	}
 
 	public static function syndicate_to( $targets, $user_id ) {

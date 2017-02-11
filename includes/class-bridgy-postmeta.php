@@ -17,6 +17,8 @@ class Bridgy_Postmeta {
 		// Micropub Syndication Targets
 		add_filter( 'micropub_syndicate-to', array( 'Bridgy_Postmeta', 'syndicate_to' ), 10, 2 );
 
+		add_action( 'admin_notices', array( 'Bridgy_Postmeta', 'admin_notices' ) );
+
 		$args = array(
 			'sanitize_callback' => 'sanitize_text_field',
 			'type' => 'string',
@@ -222,8 +224,7 @@ class Bridgy_Postmeta {
 			if ( ! is_wp_error( $response ) ) {
 				$returns[] = $response;
 			} else {
-				$errors[] = $response;
-				error_log( 'Error: ' . $response->get_error_message() );
+				$errors[] = $response->get_error_message();
 			}
 		}
 		$syn = get_post_meta( $post_id, 'mf2_syndication' );
@@ -238,7 +239,33 @@ class Bridgy_Postmeta {
 			update_post_meta( $post_id, 'mf2_syndication', $returns );
 		}
 		if ( ! empty( $errors ) ) {
+			// Add your query var if there are errors are not retreive correctly.
+			add_filter( 'redirect_post_location', array( 'Bridgy_Postmeta', 'add_notice_query_var' ), 99, 2 );
+			update_post_meta( $post_id, 'bridgy_error', join( '<br />', $errors ) );
 		}
+	}
+
+	public static function add_notice_query_var( $location, $post_id ) {
+		remove_filter( 'redirect_post_location', array( 'Bridgy_Postmeta', 'add_notice_query_var' ), 99, 2 );
+		return add_query_arg( array( 'bridgyerror' => $post_id ), $location );
+	}
+
+	public static function admin_notices() {
+		if ( ! isset( $_GET['bridgyerror'] ) ) {
+			return;
+		}
+		$post_id = (int) $_GET['bridgyerror'];
+		$error = get_post_meta( $post_id, 'bridgy_error', true );
+		if ( empty( $error ) ) {
+			return;
+		} else {
+			delete_post_meta( $post_id, 'bridgy_error' );
+		}
+		?>
+				<div class="error notice">
+	  				<p><?php _e( 'Bridgy Error: ', 'bridgy-publish' ) . esc_html_e( $error ) ?></p>
+				</div>
+			<?php
 	}
 
 	public static function wp_footer() {

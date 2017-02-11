@@ -138,7 +138,7 @@ class Bridgy_Config {
 
 		add_settings_field(
 			'omitlink',
-			__( 'Disable Link Back to Post', 'bridgy-publish' ),
+			__( 'Link Back to Post', 'bridgy-publish' ),
 			array( 'Bridgy_Config', 'radio_callback' ),
 			'bridgy-options',
 			'bridgy-content' ,
@@ -161,7 +161,7 @@ class Bridgy_Config {
 
 		add_settings_field(
 			'shortlinks',
-			__( 'Send Shortlinks insted of Full URL', 'bridgy-publish' ),
+			__( 'Send Shortlinks instead of Full URL', 'bridgy-publish' ),
 			array( 'Bridgy_Config', 'checkbox_callback' ),
 			'bridgy-options',
 			'bridgy-content' ,
@@ -232,8 +232,8 @@ class Bridgy_Config {
 
 	public static function backlink_options() {
 		return array(
-			'' => _x( 'Never', 'bridgy-publish' ),
-			'true' => _x( 'Always', 'bridgy-publish' ),
+			'' => _x( 'Show', 'bridgy-publish' ),
+			'true' => _x( 'Hide', 'bridgy-publish' ),
 			'maybe'  => _x( 'Maybe', 'bridgy-publish' ),
 		);
 	}

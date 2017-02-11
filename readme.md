@@ -32,6 +32,7 @@ for the features of the service prior to submission.
 	* Switch adding publish links to content to adding to footer
 	* Remove async hook introduced in 1.2.0 due request
 	* Errors returned by Bridgy display in the Post UI
+	* Invert description for Backlink Option from Omit to Show due confusion
 
 ### Version 1.2.1 ###
 	* Omit Links option not set on Micropub so will now pull from the default setting if the post setting is not enabled

@@ -90,7 +90,7 @@ class Bridgy_Postmeta {
 		if ( ! $bridgy_backlink_meta ) {
 			$bridgy_backlink_meta = $default;
 		}
-		$string = '<label for="bridgy_backlink_option">' . _x( 'Omit Back Link','bridgy-publish' ) . '</label>';
+		$string = '<label for="bridgy_backlink_option">' . _x( 'Link Back to Post','bridgy-publish' ) . '</label>';
 		$bridgy_backlink_options = Bridgy_Config::backlink_options();
 
 		$string .= '<select name="bridgy_backlink" id="bridgy_backlink">';

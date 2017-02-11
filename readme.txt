@@ -1,7 +1,7 @@
 === Bridgy Publish ===
 Contributors: dshanske
 Tags: indieweb, POSSE, bridgy
-Stable tag: 1.2.1
+Stable tag: 1.2.2
 Requires at least: 4.7
 Tested up to: 4.7.1
 License: GPLv2 or later
@@ -33,6 +33,8 @@ for the features of the service prior to submission.
 	* Remove async hook introduced in 1.2.0 due request
 	* Errors returned by Bridgy display in the Post UI
 	* Invert description for Backlink Option from Omit to Show due confusion
+	* Add support for pages
+	* Add `bridgy_publish_post_types` filter to show Bridgy post box on other post types
 
 = Version 1.2.1 =
 	* Omit Links option not set on Micropub so will now pull from the default setting if the post setting is not enabled

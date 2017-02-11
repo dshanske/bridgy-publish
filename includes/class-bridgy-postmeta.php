@@ -47,14 +47,17 @@ class Bridgy_Postmeta {
 
 	/* Create one or more meta boxes to be displayed on the post editor screen. */
 	public static function add_postmeta_boxes() {
-		add_meta_box(
-			'bridgybox-meta',      // Unique ID
-			esc_html__( 'Bridgy Publish To', 'bridgy-publish' ),    // Title
-			array( 'Bridgy_Postmeta', 'metabox' ),   // Callback function
-			'post',         // Admin page (or post type)
-			'side',         // Context
-			'default'         // Priority
-		);
+		$post_types = apply_filters( 'bridgy_publish_post_types', array( 'post', 'page' ) );
+		foreach( $post_types as $post_type) {
+			add_meta_box(
+				'bridgybox-meta',      // Unique ID
+				esc_html__( 'Bridgy Publish To', 'bridgy-publish' ),    // Title
+				array( 'Bridgy_Postmeta', 'metabox' ),   // Callback function
+				$post_type,         // Admin page (or post type)
+				'side',         // Context
+				'default'         // Priority
+			);
+		}
 	}
 
 	public static function bridgy_checkboxes( $post_ID ) {

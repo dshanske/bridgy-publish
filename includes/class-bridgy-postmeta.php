@@ -289,7 +289,7 @@ class Bridgy_Postmeta {
 		if ( ! $backlink = get_post_meta( get_the_ID(), '_bridgy_backlink', true ) ) {
 			$backlink = get_option( 'bridgy_backlink' );
 		}
-		if ( '' !== $backlink ) {
+		if ( ! empty( $backlink ) ) {
 			echo '<data class="p-bridgy-omit-link" value="' . $backlink . '"></data>';
 		}
 		if ( ( '1' === get_option( 'bridgy_twitterexcerpt' ) ) && has_excerpt() ) {

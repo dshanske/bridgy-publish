@@ -87,11 +87,14 @@ class Bridgy_Config {
 			'bridgy_twitterexcerpt', // option name
 			array(
 				'type' => 'boolean',
-				'description' => 'Set Twitter Post from Excerpt',
+				'description' => 'Use Post Excerpt for Tweets',
 				'show_in_rest' => true,
 				'default' => '0',
 			)
 		);
+	}
+
+	public static function admin_init() {
 
 		add_settings_section(
 			'bridgy-content',
@@ -102,7 +105,7 @@ class Bridgy_Config {
 
 		add_settings_field(
 			'bridgy_twitter',
-			__( 'Enable Twitter Option',
+			__( 'Publish to Twitter',
 			'bridgy-publish' ),
 			array( 'Bridgy_Config', 'radio_callback' ),
 			'bridgy-options',
@@ -115,7 +118,7 @@ class Bridgy_Config {
 
 		add_settings_field(
 			'bridgy_facebook',
-			__( 'Enable Facebook Option', 'bridgy-publish' ),
+			__( 'Publish to Facebook', 'bridgy-publish' ),
 			array( 'Bridgy_Config', 'radio_callback' ),
 			'bridgy-options',
 			'bridgy-content' ,
@@ -126,7 +129,7 @@ class Bridgy_Config {
 		);
 		add_settings_field(
 			'bridgy_flickr',
-			__( 'Enable Flickr Option', 'bridgy-publish' ),
+			__( 'Publish to Flickr', 'bridgy-publish' ),
 			array( 'Bridgy_Config', 'radio_callback' ),
 			'bridgy-options',
 			'bridgy-content' ,
@@ -188,8 +191,8 @@ class Bridgy_Config {
 		if ( class_exists( 'IndieWeb_Plugin' ) ) {
 			add_submenu_page(
 				'indieweb',
-				__( 'Bridgy Publish', 'bridgy-publish' ),
-				__( 'Bridgy Publish', 'bridgy-publish' ),
+				__( 'Bridgy', 'bridgy-publish' ),
+				__( 'Bridgy', 'bridgy-publish' ),
 				'manage_options',
 				'bridgy_options',
 				array( 'Bridgy_Config', 'options_form' )
@@ -197,7 +200,7 @@ class Bridgy_Config {
 		} else {
 			add_options_page(
 				'',
-				__( 'Bridgy Publish', 'bridgy-publish' ),
+				__( 'Bridgy', 'bridgy-publish' ),
 				'manage_options',
 				'bridgy_options',
 				array( 'Bridgy_Config', 'options_form' )
@@ -274,9 +277,9 @@ class Bridgy_Config {
 	public static function options_form() {
 		echo '<div class="wrap">';
 
-		echo '<h2>' . __( 'Bridgy Publish', 'bridgy-publish' ) . '</h2>';
+		echo '<h2>' . __( 'Bridgy', 'bridgy-publish' ) . '</h2>';
 		echo '<p>';
-		esc_html_e( 'Adds support for publishing through Bridgy', 'bridgy-publish' );
+		esc_html_e( 'Adds support for Bridgy', 'bridgy-publish' );
 		echo '</p><hr />';
 		echo '<form method="post" action="options.php">';
 		settings_fields( 'bridgy-options' );

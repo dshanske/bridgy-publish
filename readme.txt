@@ -30,6 +30,7 @@ For development/issues/enhancements for the Brid.gy service, please submit on th
 = Version 1.3.0 =
 	* Rebrand as Bridgy
 	* Allow simple registration on the settings page.
+	* Disable shortlinks if the send shortlinks option is not enabled
 
 = Version 1.2.2 =
 	* Switch adding publish links to content to adding to footer

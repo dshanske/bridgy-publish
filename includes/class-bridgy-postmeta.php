@@ -48,7 +48,7 @@ class Bridgy_Postmeta {
 	/* Create one or more meta boxes to be displayed on the post editor screen. */
 	public static function add_postmeta_boxes() {
 		$post_types = apply_filters( 'bridgy_publish_post_types', array( 'post', 'page' ) );
-		foreach( $post_types as $post_type) {
+		foreach ( $post_types as $post_type ) {
 			add_meta_box(
 				'bridgybox-meta',      // Unique ID
 				esc_html__( 'Bridgy Publish To', 'bridgy-publish' ),    // Title
@@ -266,7 +266,7 @@ class Bridgy_Postmeta {
 		}
 		?>
 				<div class="error notice">
-	  				<p><?php _e( 'Bridgy Error: ', 'bridgy-publish' ) . esc_html_e( $error ) ?></p>
+					  <p><?php _e( 'Bridgy Error: ', 'bridgy-publish' ) . esc_html_e( $error ) ?></p>
 				</div>
 			<?php
 	}

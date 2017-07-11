@@ -5,6 +5,9 @@ class Bridgy_Config {
 
 
 	public static function init() {
+		if ( ! get_option( 'bridgy_shortlinks' ) ) {
+			remove_action('wp_head', 'wp_shortlink_wp_head', 10, 0);
+		}
 		register_setting( 'bridgy_options', 'bridgy_options' );
 		register_setting(
 			'bridgy-options', // settings page
@@ -87,11 +90,14 @@ class Bridgy_Config {
 			'bridgy_twitterexcerpt', // option name
 			array(
 				'type' => 'boolean',
-				'description' => 'Set Twitter Post from Excerpt',
+				'description' => 'Use Post Excerpt for Tweets',
 				'show_in_rest' => true,
 				'default' => '0',
 			)
 		);
+	}
+
+	public static function admin_init() {
 
 		add_settings_section(
 			'bridgy-content',
@@ -102,7 +108,7 @@ class Bridgy_Config {
 
 		add_settings_field(
 			'bridgy_twitter',
-			__( 'Enable Twitter Option',
+			__( 'Publish to Twitter',
 			'bridgy-publish' ),
 			array( 'Bridgy_Config', 'radio_callback' ),
 			'bridgy-options',
@@ -115,7 +121,7 @@ class Bridgy_Config {
 
 		add_settings_field(
 			'bridgy_facebook',
-			__( 'Enable Facebook Option', 'bridgy-publish' ),
+			__( 'Publish to Facebook', 'bridgy-publish' ),
 			array( 'Bridgy_Config', 'radio_callback' ),
 			'bridgy-options',
 			'bridgy-content' ,
@@ -126,7 +132,7 @@ class Bridgy_Config {
 		);
 		add_settings_field(
 			'bridgy_flickr',
-			__( 'Enable Flickr Option', 'bridgy-publish' ),
+			__( 'Publish to Flickr', 'bridgy-publish' ),
 			array( 'Bridgy_Config', 'radio_callback' ),
 			'bridgy-options',
 			'bridgy-content' ,
@@ -188,8 +194,8 @@ class Bridgy_Config {
 		if ( class_exists( 'IndieWeb_Plugin' ) ) {
 			add_submenu_page(
 				'indieweb',
-				__( 'Bridgy Publish', 'bridgy-publish' ),
-				__( 'Bridgy Publish', 'bridgy-publish' ),
+				__( 'Bridgy', 'bridgy-publish' ),
+				__( 'Bridgy', 'bridgy-publish' ),
 				'manage_options',
 				'bridgy_options',
 				array( 'Bridgy_Config', 'options_form' )
@@ -197,7 +203,7 @@ class Bridgy_Config {
 		} else {
 			add_options_page(
 				'',
-				__( 'Bridgy Publish', 'bridgy-publish' ),
+				__( 'Bridgy', 'bridgy-publish' ),
 				'manage_options',
 				'bridgy_options',
 				array( 'Bridgy_Config', 'options_form' )
@@ -271,18 +277,83 @@ class Bridgy_Config {
 		echo '</fieldset>';
 	}
 
+	public static function register_form() {
+		echo '</form></div>';
+		echo '<h2>' . __( 'Bridgy Registration', 'bridgy-publish' ) . '</h2>';
+		echo '<p>' . __( 'Register for silos through the Bridgy site', 'bridgy-publish' ) . '</p>';
+		if ( ! get_user_meta( get_current_user_id(), 'bridgy-twitter' ) ) {
+			self::bridgy_form( 'twitter', __( 'Register for Twitter', 'bridgy-publish' ) ); 
+		}
+		else { 
+			echo '<a href="' . get_user_meta( get_current_user_id(), 'bridgy-twitter', true ) . '">' . __( 'Twitter User Page', 'bridgy-publish') . '</a>';
+		}
+		if ( ! get_user_meta( get_current_user_id(), 'bridgy-facebook' ) ) {
+			self::bridgy_form( 'facebook', __( 'Register for Facebook', 'bridgy-publish' ) ); 
+		}
+		else { 
+			echo '<a href="' . get_user_meta( get_current_user_id(), 'bridgy-facebook', true ) . '">' . __( 'Facebook User Page', 'bridgy-publish') . '</a>';
+		}
+		if ( ! get_user_meta( get_current_user_id(), 'bridgy-googleplus' ) ) {
+			self::bridgy_form( 'googleplus', __( 'Register for Google Plus', 'bridgy-publish' ) ); 
+		}
+		else { 
+			echo '<a href="' . get_user_meta( get_current_user_id(), 'bridgy-googleplus', true ) . '">' . __( 'Google Plus User Page', 'bridgy-publish') . '</a>';
+		}
+		if ( ! get_user_meta( get_current_user_id(), 'bridgy-instagram' ) ) {
+			self::bridgy_form( 'instagram', __( 'Register for Instagram', 'bridgy-publish' ) ); 
+		}
+		else { 
+			echo '<a href="' . get_user_meta( get_current_user_id(), 'bridgy-instagram', true ) . '">' . __( 'Instagram User Page', 'bridgy-publish') . '</a>';
+		}
+		if ( ! get_user_meta( get_current_user_id(), 'bridgy-flickr' ) ) {
+			self::bridgy_form( 'flickr', __( 'Register for Flickr', 'bridgy-publish' ) ); 
+		}
+		else { 
+			echo '<p><a href="' . get_user_meta( get_current_user_id(), 'bridgy-flickr', true ) . '">' . __( 'Flickr User Page', 'bridgy-publish') . '</a> </p>';
+		}
+
+	}
+	
+	public static function bridgy_form( $service, $text, $features = array( 'listen', 'publish' ) ) {
+		echo '<p>';
+		echo '<form method="post" action="https://brid.gy/' . $service . '/start">';
+		echo '<input class="button-secondary" type="submit" value="' . $text . '" />' . '<br />';
+		echo '<input type="hidden" name="feature" value="' . implode( ',', $features ) . '" /><br />';
+		echo '<input type="hidden" name="callback" value="' . home_url( '/wp-admin/admin.php?page=bridgy_options&service=' ) . $service  . '" />';
+		echo '</form></p>';
+	}
+
+
 	public static function options_form() {
 		echo '<div class="wrap">';
-
-		echo '<h2>' . __( 'Bridgy Publish', 'bridgy-publish' ) . '</h2>';
+		echo '<h2>' . __( 'Bridgy', 'bridgy-publish' ) . '</h2>';
 		echo '<p>';
-		esc_html_e( 'Adds support for publishing through Bridgy', 'bridgy-publish' );
+		_e( 'Adds support for Bridgy. Register for Bridgy below', 'bridgy-publish' );
 		echo '</p><hr />';
+
+		if ( isset( $_GET[ 'service' ] ) ) {
+			switch ( $_GET[ 'result'] ) {
+			case 'success':
+				update_user_meta( get_current_user_id(), 'bridgy-' . esc_attr( $_GET['service'] ), esc_url_raw( $_GET['user'] ) );
+				echo '<h2 class="notice notice-success">' . __( 'You have successfully registered', 'bridgy-publish' ) . '</h2>';
+				break;
+			case 'failure':
+				delete_user_meta( get_current_user_id(), 'bridgy-' . esc_attr( $_GET['service'] ) );
+				echo '<h2 class="notice notice-error">' . __( 'Your registration has failed', 'bridgy-publish' ) . '</h2>';
+				break;
+			case 'declined':
+				delete_user_meta( get_current_user_id(), 'bridgy-' . esc_attr( $_GET['service'] ) );
+				echo '<h2 class="notice notice-warning">' . __( 'Your registration have been declined', 'bridgy-publish' ) . '</h2>';
+				break;
+			}
+		}
+
 		echo '<form method="post" action="options.php">';
 		settings_fields( 'bridgy-options' );
 		do_settings_sections( 'bridgy-options' );
 		submit_button();
-		echo '</form></div>';
+		self::register_form();
+
 	}
 
 } // End Class

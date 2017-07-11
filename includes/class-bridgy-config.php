@@ -5,6 +5,9 @@ class Bridgy_Config {
 
 
 	public static function init() {
+		if ( ! get_option( 'bridgy_shortlinks' ) ) {
+			remove_action('wp_head', 'wp_shortlink_wp_head', 10, 0);
+		}
 		register_setting( 'bridgy_options', 'bridgy_options' );
 		register_setting(
 			'bridgy-options', // settings page
@@ -277,6 +280,7 @@ class Bridgy_Config {
 	public static function register_form() {
 		echo '</form></div>';
 		echo '<h2>' . __( 'Bridgy Registration', 'bridgy-publish' ) . '</h2>';
+		echo '<p>' . __( 'Register for silos through the Bridgy site', 'bridgy-publish' ) . '</p>';
 		if ( ! get_user_meta( get_current_user_id(), 'bridgy-twitter' ) ) {
 			self::bridgy_form( 'twitter', __( 'Register for Twitter', 'bridgy-publish' ) ); 
 		}
@@ -305,18 +309,18 @@ class Bridgy_Config {
 			self::bridgy_form( 'flickr', __( 'Register for Flickr', 'bridgy-publish' ) ); 
 		}
 		else { 
-			echo '<a href="' . get_user_meta( get_current_user_id(), 'bridgy-flickr', true ) . '">' . __( 'Flickr User Page', 'bridgy-publish') . '</a>';
+			echo '<p><a href="' . get_user_meta( get_current_user_id(), 'bridgy-flickr', true ) . '">' . __( 'Flickr User Page', 'bridgy-publish') . '</a> </p>';
 		}
 
 	}
 	
 	public static function bridgy_form( $service, $text, $features = array( 'listen', 'publish' ) ) {
-		echo '<div>';
+		echo '<p>';
 		echo '<form method="post" action="https://brid.gy/' . $service . '/start">';
-		echo '<input type="submit" value="' . $text . '" />';
+		echo '<input class="button-secondary" type="submit" value="' . $text . '" />' . '<br />';
 		echo '<input type="hidden" name="feature" value="' . implode( ',', $features ) . '" /><br />';
 		echo '<input type="hidden" name="callback" value="' . home_url( '/wp-admin/admin.php?page=bridgy_options&service=' ) . $service  . '" />';
-		echo '</form></div>';
+		echo '</form></p>';
 	}
 
 

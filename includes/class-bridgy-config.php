@@ -320,6 +320,7 @@ class Bridgy_Config {
 		echo '<input class="button-secondary" type="submit" value="' . $text . '" />' . '<br />';
 		echo '<input type="hidden" name="feature" value="' . implode( ',', $features ) . '" /><br />';
 		echo '<input type="hidden" name="callback" value="' . home_url( '/wp-admin/admin.php?page=bridgy_options&service=' ) . $service  . '" />';
+		echo '<input type="hidden" name="user_url" value="'. wp_get_current_user()->user_url . '" />';
 		echo '</form></p>';
 	}
 

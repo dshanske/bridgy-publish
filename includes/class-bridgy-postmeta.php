@@ -35,7 +35,7 @@ class Bridgy_Postmeta {
 			'single' => false,
 			'show_in_rest' => false,
 		);
-		register_meta( 'post', 'mf2_syndicate-to', $args );
+		register_meta( 'post', 'mf2_mp-syndicate-to', $args );
 
 	}
 
@@ -63,14 +63,14 @@ class Bridgy_Postmeta {
 	public static function bridgy_checkboxes( $post_ID ) {
 		$services = Bridgy_Config::service_options();
 		$string = '<ul>';
-		$meta = get_post_meta( $post_ID, 'mf2_syndicate-to', true );
+		$meta = get_post_meta( $post_ID, 'mf2_mp-syndicate-to', true );
 		foreach ( $services as $key => $value ) {
 			$service = get_option( 'bridgy_' . $key );
 			if ( '' === $service ) {
 				continue;
 			}
 			$string .= '<li>';
-			$string .= '<input type="checkbox" name="mf2_syndicate-to[]"';
+			$string .= '<input type="checkbox" name="mf2_mp-syndicate-to[]"';
 			$string .= ' value="bridgy-publish_' . $key . '"';
 			if ( empty( $meta ) ) {
 				$string .= checked( $service, 'checked', false );
@@ -145,10 +145,10 @@ class Bridgy_Postmeta {
 		}
 
 		/* OK, its safe for us to save the data now. */
-		if ( isset( $_POST['mf2_syndicate-to'] ) ) {
-			update_post_meta( $post_id, 'mf2_syndicate-to', array_map( 'sanitize_text_field', $_POST['mf2_syndicate-to'] ) );
+		if ( isset( $_POST['mf2_mp-syndicate-to'] ) ) {
+			update_post_meta( $post_id, 'mf2_mp-syndicate-to', array_map( 'sanitize_text_field', $_POST['mf2_mp-syndicate-to'] ) );
 		} else {
-			update_post_meta( $post_id, 'mf2_syndicate-to', array( 'none' ) );
+			update_post_meta( $post_id, 'mf2_mp-syndicate-to', array( 'none' ) );
 		}
 
 		if ( isset( $_POST['bridgy_backlink'] ) ) {
@@ -181,7 +181,7 @@ class Bridgy_Postmeta {
 	}
 
 	public static function services( $post_id ) {
-		$metas = get_post_meta( $post_id, 'mf2_syndicate-to', true );
+		$metas = get_post_meta( $post_id, 'mf2_mp-syndicate-to', true );
 		if ( ! $metas ) {
 			return array();
 		}

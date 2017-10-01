@@ -1,9 +1,9 @@
 === Bridgy Publish ===
 Contributors: dshanske
 Tags: indieweb, POSSE, bridgy
-Stable tag: 1.3.0
+Stable tag: 1.3.1
 Requires at least: 4.7
-Tested up to: 4.8
+Tested up to: 4.8.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -26,6 +26,9 @@ For development/issues/enhancements for the Brid.gy service, please submit on th
 
 
 == Changelog == 
+
+= Version 1.3.1 =
+	* Fix micropub syndicate standard compliance.
 
 = Version 1.3.0 =
 	* Rebrand as Bridgy

@@ -230,7 +230,7 @@ class Bridgy_Postmeta {
 				$errors[] = $response->get_error_message();
 			}
 		}
-		$syn = get_post_meta( $post_id, 'mf2_syndication' );
+		$syn = get_post_meta( $post_id, 'mf2_syndication', true );
 
 		if ( ! empty( $returns ) ) {
 			if ( ! $syn ) {

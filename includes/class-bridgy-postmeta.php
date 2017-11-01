@@ -293,7 +293,7 @@ class Bridgy_Postmeta {
 			echo '<data class="p-bridgy-omit-link" value="' . $backlink . '"></data>';
 		}
 		if ( ( '1' === get_option( 'bridgy_twitterexcerpt' ) ) && has_excerpt() ) {
-			echo '<p="p-bridgy-twitter-content" style="display:none"' . get_the_excerpt() . '</p>';
+			echo '<p class="p-bridgy-twitter-content" style="display:none"' . get_the_excerpt() . '</p>';
 		}
 	}
 

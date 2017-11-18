@@ -1,7 +1,7 @@
 === Bridgy Publish ===
 Contributors: dshanske
 Tags: indieweb, POSSE, bridgy
-Stable tag: 1.3.2
+Stable tag: 1.3.3
 Requires at least: 4.7
 Tested up to: 4.9
 License: GPLv2 or later
@@ -26,6 +26,12 @@ For development/issues/enhancements for the Brid.gy service, please submit on th
 
 
 == Changelog == 
+
+= Version 1.3.3 =
+	* Fix Twitter excerpt issue due closing bracket missing
+	* Fix Omit Link Issue
+	* Move from embedding omit link and ignore formatting to using query parameters
+	* Support alternate URL paths for WordPress when registering
 
 = Version 1.3.2 =
 	* Add testing environment

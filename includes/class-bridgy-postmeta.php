@@ -12,6 +12,7 @@ class Bridgy_Postmeta {
 		add_action( 'save_post', array( 'Bridgy_Postmeta', 'publish_post' ), 99, 3 );
 
 		add_action( 'wp_footer', array( 'Bridgy_Postmeta', 'wp_footer' ) );
+		add_filter( 'webmention_send_vars', array( 'Bridgy_Postmeta', 'webmention_send_vars' ), 10, 2 );
 		// Syndication Link Backcompat
 		add_filter( 'syn_add_links', array( 'Bridgy_Postmeta', 'syn_add_links' ) );
 		// Micropub Syndication Targets
@@ -280,30 +281,38 @@ class Bridgy_Postmeta {
 			<?php
 	}
 
-	public static function wp_footer() {
-		$classes = array();
-
-		if ( '1' === get_option( 'bridgy_ignoreformatting' ) ) {
-			$classes[] = 'u-bridgy-ignore-formatting';
+	public static function webmention_send_vars( $body, $post_id ) {
+		if ( ! $post_id ) {
+			$post_id = get_the_ID();
 		}
-		$class = implode( ' ', $classes );
-		$link  = '<a class="%1$s" href="https://www.brid.gy/publish/%2$s"></a>';
-
-		$services = self::services( get_the_ID() );
-
-		foreach ( $services as $service ) {
-			printf( $link, $class, $service );
+		$domain = wp_parse_url( urldecode( $body['target'] ), PHP_URL_HOST );
+		if ( 'www.brid.gy' !== $domain ) {
+			return $body;
 		}
 
-		$backlink = get_post_meta( get_the_ID(), '_bridgy_backlink', true );
+		$backlink = get_post_meta( $post_id, '_bridgy_backlink', true );
 		if ( ! $backlink ) {
 			$backlink = get_option( 'bridgy_backlink' );
 		}
 		if ( ! empty( $backlink ) ) {
-			echo '<data class="p-bridgy-omit-link" value="' . $backlink . '"></data>';
+			$body['bridgy_omit_link'] = $backlink;
 		}
-		if ( ( '1' === get_option( 'bridgy_twitterexcerpt' ) ) && has_excerpt() ) {
-			echo '<p class="p-bridgy-twitter-content" style="display:none"' . get_the_excerpt() . '</p>';
+		if ( 1 === (int) get_option( 'bridgy_ignoreformatting' ) ) {
+			$body['bridgy-ignore-formatting'] = 'true';
+		}
+		return $body;
+	}
+
+	public static function wp_footer() {
+		$link     = '<a href="https://www.brid.gy/publish/%1$s"></a>';
+		$services = self::services( get_the_ID() );
+
+		foreach ( $services as $service ) {
+			printf( $link, $service );
+		}
+
+		if ( ( 1 === (int) get_option( 'bridgy_twitterexcerpt' ) ) && has_excerpt() ) {
+			echo '<p class="p-bridgy-twitter-content" style="display:none">' . get_the_excerpt() . '</p>';
 		}
 	}
 

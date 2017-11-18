@@ -1,9 +1,9 @@
 # Bridgy Publish #
 **Contributors:** dshanske  
 **Tags:** indieweb, POSSE, bridgy  
-**Stable tag:** 1.3.1  
+**Stable tag:** 1.3.2  
 **Requires at least:** 4.7  
-**Tested up to:** 4.8.2  
+**Tested up to:** 4.9  
 **License:** GPLv2 or later  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -26,6 +26,12 @@ For development/issues/enhancements for the Brid.gy service, please submit on th
 
 
 ## Changelog ##
+
+### Version 1.3.2 ###
+	* Add testing environment
+	* Fix PHPCS issues
+	* Ensure PHP compatibility
+	* Fix typo on class for bridgy excerpt (props @miklb )
 
 ### Version 1.3.1 ###
 	* Fix micropub syndicate standard compliance.

@@ -21,18 +21,17 @@ class Bridgy_Postmeta {
 
 		$args = array(
 			'sanitize_callback' => 'sanitize_text_field',
-			'type' => 'string',
-			'description' => 'Brid.gy Disable Backlink',
-			'single' => true,
-			'show_in_rest' => false,
+			'type'              => 'string',
+			'description'       => 'Brid.gy Disable Backlink',
+			'single'            => true,
+			'show_in_rest'      => false,
 		);
 		register_meta( 'post', '_bridgy_backlink', $args );
 
 		$args = array(
-		//	'sanitize_callback' => '',
-			'type' => 'array',
-			'description' => 'Syndicate To',
-			'single' => false,
+			'type'         => 'array',
+			'description'  => 'Syndicate To',
+			'single'       => false,
 			'show_in_rest' => false,
 		);
 		register_meta( 'post', 'mf2_mp-syndicate-to', $args );
@@ -62,8 +61,8 @@ class Bridgy_Postmeta {
 
 	public static function bridgy_checkboxes( $post_ID ) {
 		$services = Bridgy_Config::service_options();
-		$string = '<ul>';
-		$meta = get_post_meta( $post_ID, 'mf2_mp-syndicate-to', true );
+		$string   = '<ul>';
+		$meta     = get_post_meta( $post_ID, 'mf2_mp-syndicate-to', true );
 		foreach ( $services as $key => $value ) {
 			$service = get_option( 'bridgy_' . $key );
 			if ( '' === $service ) {
@@ -75,7 +74,7 @@ class Bridgy_Postmeta {
 			if ( empty( $meta ) ) {
 				$string .= checked( $service, 'checked', false );
 			} else {
-				$string .= in_array( 'bridgy-publish_' . $key , $meta ) ? ' checked' : '';
+				$string .= in_array( 'bridgy-publish_' . $key, $meta, true ) ? ' checked' : '';
 			}
 
 			$string .= ' />';
@@ -89,16 +88,16 @@ class Bridgy_Postmeta {
 
 	public static function bridgy_backlink( $post_ID ) {
 		$bridgy_backlink_meta = get_post_meta( $post_ID, '_bridgy_backlink', true );
-		$default = get_option( 'bridgy_backlink' );
+		$default              = get_option( 'bridgy_backlink' );
 		if ( ! $bridgy_backlink_meta ) {
 			$bridgy_backlink_meta = $default;
 		}
-		$string = '<label for="bridgy_backlink_option">' . _x( 'Link Back to Post','bridgy-publish' ) . '</label>';
+		$string                  = '<label for="bridgy_backlink_option">' . __( 'Link Back to Post', 'bridgy-publish' ) . '</label>';
 		$bridgy_backlink_options = Bridgy_Config::backlink_options();
 
 		$string .= '<select name="bridgy_backlink" id="bridgy_backlink">';
 		foreach ( $bridgy_backlink_options as $key => $value ) {
-			$string .= '<option value="' . $key . '" ' . ( $bridgy_backlink_meta === $key ? 'selected>' : '>' )  . $value . '</option>';
+			$string .= '<option value="' . $key . '" ' . ( $bridgy_backlink_meta === $key ? 'selected>' : '>' ) . $value . '</option>';
 		}
 		$string .= '</select>';
 		return $string;
@@ -153,7 +152,7 @@ class Bridgy_Postmeta {
 
 		if ( isset( $_POST['bridgy_backlink'] ) ) {
 			if ( ! empty( $_POST['bridgy_backlink'] ) ) {
-				update_post_meta( $post_id,'_bridgy_backlink', sanitize_text_field( $_POST['bridgy_backlink'] ) );
+				update_post_meta( $post_id, '_bridgy_backlink', sanitize_text_field( $_POST['bridgy_backlink'] ) );
 			} else {
 				delete_post_meta( $post_id, '_bridgy_backlink' );
 			}
@@ -161,16 +160,26 @@ class Bridgy_Postmeta {
 	}
 
 	public static function send_webmention( $url, $key ) {
-		$response = send_webmention( $url, 'https://www.brid.gy/publish/' . $key );
+		$response      = send_webmention( $url, 'https://www.brid.gy/publish/' . $key );
 		$response_code = wp_remote_retrieve_response_code( $response );
-		$json = json_decode( $response['body'] );
+		$json          = json_decode( $response['body'] );
 		if ( 201 === $response_code ) {
 			return $json->url;
 		}
-		if ( (400 === $response_code)||(500 === $response_code) ) {
-			return new WP_Error( 'bridgy_publish_error', $json->error, array( 'status' => 400, 'data' => $json ) );
+		if ( ( 400 === $response_code ) || ( 500 === $response_code ) ) {
+			return new WP_Error(
+				'bridgy_publish_error', $json->error, array(
+					'status' => 400,
+					'data'   => $json,
+				)
+			);
 		}
-		return new WP_Error( 'bridgy_publish_error' , __( 'Unknown Bridgy Publish Error' ), array( 'status' => $response_code, 'data' => $json ) );
+		return new WP_Error(
+			'bridgy_publish_error', __( 'Unknown Bridgy Publish Error', 'bridgy-publish' ), array(
+				'status' => $response_code,
+				'data'   => $json,
+			)
+		);
 	}
 
 	public static function str_prefix( $source, $prefix ) {
@@ -212,16 +221,16 @@ class Bridgy_Postmeta {
 			return;
 		}
 
-		 /* OK, its safe for us to save the data now. */
+		/* OK, its safe for us to save the data now. */
 		$url = '';
-		if ( '1' == get_option( 'bridgy_shortlinks' ) ) {
+		if ( 1 === (int) get_option( 'bridgy_shortlinks' ) ) {
 			$url = wp_get_shortlink( $post_id );
 		}
 		if ( empty( $url ) ) {
 			$url = get_permalink( $post_id );
 		}
 		$returns = array();
-		$errors = array();
+		$errors  = array();
 		foreach ( $services as $service ) {
 			$response = self::send_webmention( $url, $service );
 			if ( ! is_wp_error( $response ) ) {
@@ -258,7 +267,7 @@ class Bridgy_Postmeta {
 			return;
 		}
 		$post_id = (int) $_GET['bridgyerror'];
-		$error = get_post_meta( $post_id, 'bridgy_error', true );
+		$error   = get_post_meta( $post_id, 'bridgy_error', true );
 		if ( empty( $error ) ) {
 			return;
 		} else {
@@ -266,7 +275,7 @@ class Bridgy_Postmeta {
 		}
 		?>
 				<div class="error notice">
-					  <p><?php _e( 'Bridgy Error: ', 'bridgy-publish' ) . esc_html_e( $error ) ?></p>
+					<p><?php _e( 'Bridgy Error: ', 'bridgy-publish' ) . esc_html( $error ); ?></p>
 				</div>
 			<?php
 	}
@@ -278,7 +287,7 @@ class Bridgy_Postmeta {
 			$classes[] = 'u-bridgy-ignore-formatting';
 		}
 		$class = implode( ' ', $classes );
-		$link = '<a class="%1$s" href="https://www.brid.gy/publish/%2$s"></a>';
+		$link  = '<a class="%1$s" href="https://www.brid.gy/publish/%2$s"></a>';
 
 		$services = self::services( get_the_ID() );
 
@@ -286,7 +295,8 @@ class Bridgy_Postmeta {
 			printf( $link, $class, $service );
 		}
 
-		if ( ! $backlink = get_post_meta( get_the_ID(), '_bridgy_backlink', true ) ) {
+		$backlink = get_post_meta( get_the_ID(), '_bridgy_backlink', true );
+		if ( ! $backlink ) {
 			$backlink = get_option( 'bridgy_backlink' );
 		}
 		if ( ! empty( $backlink ) ) {
@@ -302,7 +312,8 @@ class Bridgy_Postmeta {
 		foreach ( $services as $key => $value ) {
 			if ( get_option( 'bridgy_' . $key ) ) {
 				$targets[] = array(
-					'uid' => 'bridgy-publish_'. $key,
+					'uid'  => 'bridgy-publish_' . $key,
+					// translators: Name of Service such as Facebook
 					'name' => sprintf( __( '%1$s via Bridgy Publish', 'bridgy-publish' ), $value ),
 				);
 			}
@@ -310,7 +321,7 @@ class Bridgy_Postmeta {
 		return $targets;
 	}
 
-	public static function syn_add_links($urls) {
+	public static function syn_add_links( $urls ) {
 		$bridgy = get_post_meta( get_the_ID(), 'bridgy_syndication' );
 		if ( ! $bridgy ) {
 			return $urls;

@@ -271,7 +271,7 @@ class Bridgy_Config {
 		return array(
 			''      => __( 'Show', 'bridgy-publish' ),
 			'true'  => __( 'Hide', 'bridgy-publish' ),
-			'maybe' => __( 'Maybe', 'bridgy-publish' ),
+			'maybe' => __( 'If Shortened', 'bridgy-publish' ),
 		);
 	}
 

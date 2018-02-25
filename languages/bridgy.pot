@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Bridgy 1.4.0\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/bridgy-publish\n"
-"POT-Creation-Date: 2018-02-25 03:52:35+00:00\n"
+"POT-Creation-Date: 2018-02-25 04:29:39+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -169,11 +169,11 @@ msgstr ""
 msgid "Bridgy Does Not Publish Private Posts"
 msgstr ""
 
-#: includes/class-bridgy-postmeta.php:284
+#: includes/class-bridgy-postmeta.php:287
 msgid "Bridgy Error: "
 msgstr ""
 
-#: includes/class-bridgy-postmeta.php:331
+#: includes/class-bridgy-postmeta.php:335
 #. translators: Name of Service such as Facebook
 msgid "%1$s via Bridgy Publish"
 msgstr ""

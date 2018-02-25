@@ -26,9 +26,7 @@ function bridgy_plugin_init() {
 	load_plugin_textdomain( 'bridgy-publish', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 	// Config Class
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-bridgy-config.php';
-	add_action( 'admin_init', array( 'Bridgy_Config', 'admin_init' ) );
-	add_action( 'init', array( 'Bridgy_Config', 'init' ) );
-	add_action( 'admin_menu', array( 'Bridgy_Config', 'admin_menu' ), 13 );
+	new Bridgy_Config();
 
 	// Post Meta Class
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-bridgy-postmeta.php';

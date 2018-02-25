@@ -3,8 +3,13 @@
 // The Bridgy_Config class sets up the Settings Page for the plugin
 class Bridgy_Config {
 
+	public function __construct() {
+		add_action( 'admin_init', array( 'Bridgy_Config', 'admin_init' ) );
+		add_action( 'init', array( 'Bridgy_Config', 'init' ) );
+		add_action( 'admin_menu', array( 'Bridgy_Config', 'admin_menu' ), 13 );
+	}
 
-	public static function init() {
+	public function init() {
 		if ( ! get_option( 'bridgy_shortlinks' ) ) {
 			remove_action( 'wp_head', 'wp_shortlink_wp_head', 10, 0 );
 		}
@@ -97,7 +102,7 @@ class Bridgy_Config {
 		);
 	}
 
-	public static function admin_init() {
+	public function admin_init() {
 
 		add_settings_section(
 			'bridgy-content',
@@ -191,7 +196,7 @@ class Bridgy_Config {
 
 	}
 
-	public static function admin_menu() {
+	public function admin_menu() {
 		// If the IndieWeb Plugin is installed use its menu.
 		if ( class_exists( 'IndieWeb_Plugin' ) ) {
 			add_submenu_page(
@@ -213,24 +218,24 @@ class Bridgy_Config {
 		}
 	}
 
-	public static function settings_link( $links ) {
+	public function settings_link( $links ) {
 		$settings_link = '<a href="options-general.php?page=bridgy_options">Settings</a>';
 		array_unshift( $links, $settings_link );
 		return $links;
 	}
 
-	public static function options_callback() {
+	public function options_callback() {
 		_e( 'Bridgy', 'bridgy-publish' );
 	}
 
-	public static function checkbox_callback( array $args ) {
+	public function checkbox_callback( array $args ) {
 		$name    = $args['name'];
 		$checked = get_option( $name );
 		echo "<input name='" . $name . "' type='hidden' value=0 />";
 		echo "<input name='" . $name . "' type='checkbox' value=1 " . checked( 1, $checked, false ) . ' /> ';
 	}
 
-	public static function syndication_options() {
+	public function syndication_options() {
 		return array(
 			''        => __( 'Disable', 'bridgy-publish' ),
 			'true'    => __( 'Enabled', 'bridgy-publish' ),
@@ -238,7 +243,7 @@ class Bridgy_Config {
 		);
 	}
 
-	public static function backlink_options() {
+	public function backlink_options() {
 		return array(
 			''      => __( 'Show', 'bridgy-publish' ),
 			'true'  => __( 'Hide', 'bridgy-publish' ),
@@ -246,7 +251,7 @@ class Bridgy_Config {
 		);
 	}
 
-	public static function service_options() {
+	public function service_options() {
 		return array(
 			'twitter'  => __( 'Twitter', 'bridgy-publish' ),
 			'facebook' => __( 'Facebook', 'bridgy-publish' ),
@@ -254,7 +259,7 @@ class Bridgy_Config {
 		);
 	}
 
-	public static function select_callback( array $args ) {
+	public function select_callback( array $args ) {
 		$name    = $args['name'];
 		$select  = get_option( $name );
 		$options = $args['list'];
@@ -265,7 +270,7 @@ class Bridgy_Config {
 		echo '</select>';
 	}
 
-	public static function radio_callback( array $args ) {
+	public function radio_callback( array $args ) {
 		$name    = $args['name'];
 		$select  = get_option( $name );
 		$options = $args['list'];
@@ -279,7 +284,7 @@ class Bridgy_Config {
 		echo '</fieldset>';
 	}
 
-	public static function register_form() {
+	public function register_form() {
 		echo '</form></div>';
 		echo '<h2>' . __( 'Bridgy Registration', 'bridgy-publish' ) . '</h2>';
 		echo '<p>' . __( 'Register for silos through the Bridgy site', 'bridgy-publish' ) . '</p>';
@@ -317,7 +322,7 @@ class Bridgy_Config {
 
 	}
 
-	public static function bridgy_form( $service, $text, $features = array( 'listen', 'publish' ) ) {
+	public function bridgy_form( $service, $text, $features = array( 'listen', 'publish' ) ) {
 		echo '<p>';
 		echo '<form method="post" action="https://brid.gy/' . $service . '/start">';
 		echo '<input class="button-secondary" type="submit" value="' . $text . '" /><br />';
@@ -328,7 +333,7 @@ class Bridgy_Config {
 	}
 
 
-	public static function options_form() {
+	public function options_form() {
 		echo '<div class="wrap">';
 		echo '<h2>' . __( 'Bridgy', 'bridgy-publish' ) . '</h2>';
 		echo '<p>';

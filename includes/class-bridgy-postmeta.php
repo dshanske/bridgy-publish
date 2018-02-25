@@ -3,7 +3,7 @@
 
 // The Bridgy_Postmeta class sets up a post meta box to publish using Bridgy
 class Bridgy_Postmeta {
-	public function __contruct() {
+	public function __construct() {
 		// Add meta box to new post/post pages only
 		add_action( 'load-post.php', array( 'Bridgy_Postmeta', 'bridgybox_setup' ) );
 		add_action( 'load-post-new.php', array( 'Bridgy_Postmeta', 'bridgybox_setup' ) );
@@ -108,9 +108,9 @@ class Bridgy_Postmeta {
 	public function metabox( $object, $box ) {
 		wp_nonce_field( 'bridgy_metabox', 'bridgy_metabox_nonce' );
 
-		echo $this->bridgy_checkboxes( $object->ID );
+		echo self::bridgy_checkboxes( $object->ID );
 
-		echo $this->bridgy_backlink( $object->ID );
+		echo self::bridgy_backlink( $object->ID );
 	}
 
 	/* Save the meta box's post metadata. */

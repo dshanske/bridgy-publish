@@ -59,6 +59,17 @@ class Bridgy_Config {
 
 		register_setting(
 			'bridgy-options', // settings page
+			'bridgy_github', // option name
+			array(
+				'type'         => 'string',
+				'description'  => 'Brid.gy Github Option',
+				'show_in_rest' => true,
+				'default'      => '',
+			)
+		);
+
+		register_setting(
+			'bridgy-options', // settings page
 			'bridgy_ignoreformatting', // option name
 			array(
 				'type'         => 'boolean',
@@ -137,6 +148,7 @@ class Bridgy_Config {
 				'list' => self::syndication_options(),
 			)
 		);
+
 		add_settings_field(
 			'bridgy_flickr',
 			__( 'Publish to Flickr', 'bridgy-publish' ),
@@ -145,6 +157,18 @@ class Bridgy_Config {
 			'bridgy-content',
 			array(
 				'name' => 'bridgy_flickr',
+				'list' => self::syndication_options(),
+			)
+		);
+
+		add_settings_field(
+			'bridgy_github',
+			__( 'Publish to Github', 'bridgy-publish' ),
+			array( $this, 'radio_callback' ),
+			'bridgy-options',
+			'bridgy-content',
+			array(
+				'name' => 'bridgy_github',
 				'list' => self::syndication_options(),
 			)
 		);

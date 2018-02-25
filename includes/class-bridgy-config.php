@@ -267,7 +267,7 @@ class Bridgy_Config {
 		);
 	}
 
-	public function backlink_options() {
+	public static function backlink_options() {
 		return array(
 			''      => __( 'Show', 'bridgy-publish' ),
 			'true'  => __( 'Hide', 'bridgy-publish' ),
@@ -275,7 +275,7 @@ class Bridgy_Config {
 		);
 	}
 
-	public function service_options() {
+	public static function service_options() {
 		return array(
 			'twitter'  => __( 'Twitter', 'bridgy-publish' ),
 			'facebook' => __( 'Facebook', 'bridgy-publish' ),

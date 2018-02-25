@@ -3,7 +3,7 @@
 
 // The Bridgy_Postmeta class sets up a post meta box to publish using Bridgy
 class Bridgy_Postmeta {
-	public static function init() {
+	public function __contruct() {
 		// Add meta box to new post/post pages only
 		add_action( 'load-post.php', array( 'Bridgy_Postmeta', 'bridgybox_setup' ) );
 		add_action( 'load-post-new.php', array( 'Bridgy_Postmeta', 'bridgybox_setup' ) );
@@ -40,13 +40,13 @@ class Bridgy_Postmeta {
 	}
 
 	/* Meta box setup function. */
-	public static function bridgybox_setup() {
+	public function bridgybox_setup() {
 		/* Add meta boxes on the 'add_meta_boxes' hook. */
 		add_action( 'add_meta_boxes', array( 'Bridgy_Postmeta', 'add_postmeta_boxes' ) );
 	}
 
 	/* Create one or more meta boxes to be displayed on the post editor screen. */
-	public static function add_postmeta_boxes() {
+	public function add_postmeta_boxes() {
 		$post_types = apply_filters( 'bridgy_publish_post_types', array( 'post', 'page' ) );
 		foreach ( $post_types as $post_type ) {
 			add_meta_box(
@@ -60,7 +60,7 @@ class Bridgy_Postmeta {
 		}
 	}
 
-	public static function bridgy_checkboxes( $post_ID ) {
+	public function bridgy_checkboxes( $post_ID ) {
 		$services = Bridgy_Config::service_options();
 		$string   = '<ul>';
 		$meta     = get_post_meta( $post_ID, 'mf2_mp-syndicate-to', true );
@@ -88,7 +88,7 @@ class Bridgy_Postmeta {
 		return $string;
 	}
 
-	public static function bridgy_backlink( $post_ID ) {
+	public function bridgy_backlink( $post_ID ) {
 		$bridgy_backlink_meta = get_post_meta( $post_ID, '_bridgy_backlink', true );
 		$default              = get_option( 'bridgy_backlink' );
 		if ( ! $bridgy_backlink_meta ) {
@@ -105,16 +105,16 @@ class Bridgy_Postmeta {
 		return $string;
 	}
 
-	public static function metabox( $object, $box ) {
+	public function metabox( $object, $box ) {
 		wp_nonce_field( 'bridgy_metabox', 'bridgy_metabox_nonce' );
 
-		echo self::bridgy_checkboxes( $object->ID );
+		echo $this->bridgy_checkboxes( $object->ID );
 
-		echo self::bridgy_backlink( $object->ID );
+		echo $this->bridgy_backlink( $object->ID );
 	}
 
 	/* Save the meta box's post metadata. */
-	public static function save_post( $post_id, $post, $update ) {
+	public function save_post( $post_id, $post, $update ) {
 		/*
 		 * We need to verify this came from our screen and with proper authorization,
 		 * because the save_post action can be triggered at other times.
@@ -161,7 +161,7 @@ class Bridgy_Postmeta {
 		}
 	}
 
-	public static function send_webmention( $url, $key ) {
+	public function send_webmention( $url, $key ) {
 		$response      = send_webmention( $url, 'https://www.brid.gy/publish/' . $key );
 		$response_code = wp_remote_retrieve_response_code( $response );
 		$json          = json_decode( $response['body'] );
@@ -184,14 +184,14 @@ class Bridgy_Postmeta {
 		);
 	}
 
-	public static function str_prefix( $source, $prefix ) {
+	public function str_prefix( $source, $prefix ) {
 		if ( ! is_string( $source ) || ! is_string( $prefix ) ) {
 			return false;
 		}
 		return strncmp( $source, $prefix, strlen( $prefix ) ) === 0;
 	}
 
-	public static function services( $post_id ) {
+	public function services( $post_id ) {
 		$metas = get_post_meta( $post_id, 'mf2_mp-syndicate-to', true );
 		if ( ! $metas ) {
 			return array();
@@ -201,24 +201,24 @@ class Bridgy_Postmeta {
 		}
 		$services = array();
 		foreach ( $metas as $meta ) {
-			if ( self::str_prefix( $meta, 'bridgy-publish_' ) ) {
+			if ( $this->str_prefix( $meta, 'bridgy-publish_' ) ) {
 				$services[] = str_replace( 'bridgy-publish_', '', $meta );
 			}
 		}
 		return array_filter( $services );
 	}
 
-	public static function publish_post( $post_id, $post, $update ) {
+	public function publish_post( $post_id, $post, $update ) {
 		if ( 'publish' === $post->post_status ) {
-			self::send_bridgy( $post_id );
+			$this->send_bridgy( $post_id );
 		}
 	}
 
-	public static function send_bridgy( $post_id = null ) {
+	public function send_bridgy( $post_id = null ) {
 		if ( ! $post_id ) {
 			$post_id = get_the_ID();
 		}
-		$services = self::services( $post_id );
+		$services = $this->services( $post_id );
 		if ( ! $services ) {
 			return;
 		}
@@ -234,7 +234,7 @@ class Bridgy_Postmeta {
 		$returns = array();
 		$errors  = array();
 		foreach ( $services as $service ) {
-			$response = self::send_webmention( $url, $service );
+			$response = $this->send_webmention( $url, $service );
 			if ( ! is_wp_error( $response ) ) {
 				$returns[] = $response;
 			} else {
@@ -259,12 +259,12 @@ class Bridgy_Postmeta {
 		}
 	}
 
-	public static function add_notice_query_var( $location, $post_id ) {
+	public function add_notice_query_var( $location, $post_id ) {
 		remove_filter( 'redirect_post_location', array( 'Bridgy_Postmeta', 'add_notice_query_var' ), 99, 2 );
 		return add_query_arg( array( 'bridgyerror' => $post_id ), $location );
 	}
 
-	public static function admin_notices() {
+	public function admin_notices() {
 		if ( ! isset( $_GET['bridgyerror'] ) ) {
 			return;
 		}
@@ -282,7 +282,7 @@ class Bridgy_Postmeta {
 			<?php
 	}
 
-	public static function webmention_send_vars( $body, $post_id ) {
+	public function webmention_send_vars( $body, $post_id ) {
 		if ( ! $post_id ) {
 			$post_id = get_the_ID();
 		}
@@ -304,9 +304,9 @@ class Bridgy_Postmeta {
 		return $body;
 	}
 
-	public static function wp_footer() {
+	public function wp_footer() {
 		$link     = '<a href="https://www.brid.gy/publish/%1$s"></a>';
-		$services = self::services( get_the_ID() );
+		$services = $this->services( get_the_ID() );
 
 		foreach ( $services as $service ) {
 			printf( $link, $service );
@@ -317,7 +317,7 @@ class Bridgy_Postmeta {
 		}
 	}
 
-	public static function syndicate_to( $targets, $user_id ) {
+	public function syndicate_to( $targets, $user_id ) {
 		$services = Bridgy_Config::service_options();
 		foreach ( $services as $key => $value ) {
 			if ( get_option( 'bridgy_' . $key ) ) {
@@ -331,7 +331,7 @@ class Bridgy_Postmeta {
 		return $targets;
 	}
 
-	public static function syn_add_links( $urls ) {
+	public function syn_add_links( $urls ) {
 		$bridgy = get_post_meta( get_the_ID(), 'bridgy_syndication' );
 		if ( ! $bridgy ) {
 			return $urls;

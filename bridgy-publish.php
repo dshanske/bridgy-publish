@@ -30,6 +30,6 @@ function bridgy_plugin_init() {
 
 	// Post Meta Class
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-bridgy-postmeta.php';
-	add_action( 'init', array( 'Bridgy_Postmeta', 'init' ) );
+	new Bridgy_Postmeta();
 
 }

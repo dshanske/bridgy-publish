@@ -28,10 +28,12 @@ For development/issues/enhancements for the Brid.gy service, please submit on th
 
 == Changelog == 
 
-= Version 1.4.0 (2018-02-xx ) = 
+= Version 1.4.0 (2018-02-25 ) = 
 * Refactor classes from static
 * Add Github option
 * Add Template options
+* Fix issue surfacing error messages
+* Change text per request
 = Version 1.3.3 =
 * Fix Twitter excerpt issue due closing bracket missing
 * Fix Omit Link Issue

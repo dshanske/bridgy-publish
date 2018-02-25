@@ -82,8 +82,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-sass');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-checktextdomain');
-  grunt.loadNpmTasks( 'grunt-contrib-clean' );
-  grunt.loadNpmTasks( 'grunt-git' );
   // Default task(s).
   grunt.registerTask('default', ['wp_readme_to_markdown', 'makepot', 'checktextdomain']);
 

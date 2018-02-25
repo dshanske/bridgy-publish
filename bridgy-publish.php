@@ -3,7 +3,7 @@
  * Plugin Name: Bridgy
  * Plugin URI: https://github.com/dshanske/bridgy-publish
  * Description: Bridgy pulls comments, likes, and reshares on social networks back to your web site. You can also use it to post to social networks - or comment, like, reshare, or even RSVP - from your own web site.
- * Version: 1.3.3
+ * Version: 1.4.0
  * Author: David Shanske
  * Author URI: http://david.shanske.com
  * Text Domain: bridgy-publish
@@ -26,12 +26,10 @@ function bridgy_plugin_init() {
 	load_plugin_textdomain( 'bridgy-publish', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 	// Config Class
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-bridgy-config.php';
-	add_action( 'admin_init', array( 'Bridgy_Config', 'admin_init' ) );
-	add_action( 'init', array( 'Bridgy_Config', 'init' ) );
-	add_action( 'admin_menu', array( 'Bridgy_Config', 'admin_menu' ), 13 );
+	new Bridgy_Config();
 
 	// Post Meta Class
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-bridgy-postmeta.php';
-	add_action( 'init', array( 'Bridgy_Postmeta', 'init' ) );
+	new Bridgy_Postmeta();
 
 }

@@ -3,8 +3,13 @@
 // The Bridgy_Config class sets up the Settings Page for the plugin
 class Bridgy_Config {
 
+	public function __construct() {
+		add_action( 'admin_init', array( $this, 'admin_init' ) );
+		add_action( 'init', array( $this, 'init' ) );
+		add_action( 'admin_menu', array( $this, 'admin_menu' ), 13 );
+	}
 
-	public static function init() {
+	public function init() {
 		if ( ! get_option( 'bridgy_shortlinks' ) ) {
 			remove_action( 'wp_head', 'wp_shortlink_wp_head', 10, 0 );
 		}
@@ -47,6 +52,17 @@ class Bridgy_Config {
 			array(
 				'type'         => 'string',
 				'description'  => 'Brid.gy Flicker Option',
+				'show_in_rest' => true,
+				'default'      => '',
+			)
+		);
+
+		register_setting(
+			'bridgy-options', // settings page
+			'bridgy_github', // option name
+			array(
+				'type'         => 'string',
+				'description'  => 'Brid.gy Github Option',
 				'show_in_rest' => true,
 				'default'      => '',
 			)
@@ -97,12 +113,12 @@ class Bridgy_Config {
 		);
 	}
 
-	public static function admin_init() {
+	public function admin_init() {
 
 		add_settings_section(
 			'bridgy-content',
 			__( 'Options', 'bridgy-publish' ),
-			array( 'Bridgy_Config', 'options_callback' ),
+			array( $this, 'options_callback' ),
 			'bridgy-options'
 		);
 
@@ -112,7 +128,7 @@ class Bridgy_Config {
 				'Publish to Twitter',
 				'bridgy-publish'
 			),
-			array( 'Bridgy_Config', 'radio_callback' ),
+			array( $this, 'radio_callback' ),
 			'bridgy-options',
 			'bridgy-content',
 			array(
@@ -124,7 +140,7 @@ class Bridgy_Config {
 		add_settings_field(
 			'bridgy_facebook',
 			__( 'Publish to Facebook', 'bridgy-publish' ),
-			array( 'Bridgy_Config', 'radio_callback' ),
+			array( $this, 'radio_callback' ),
 			'bridgy-options',
 			'bridgy-content',
 			array(
@@ -132,10 +148,11 @@ class Bridgy_Config {
 				'list' => self::syndication_options(),
 			)
 		);
+
 		add_settings_field(
 			'bridgy_flickr',
 			__( 'Publish to Flickr', 'bridgy-publish' ),
-			array( 'Bridgy_Config', 'radio_callback' ),
+			array( $this, 'radio_callback' ),
 			'bridgy-options',
 			'bridgy-content',
 			array(
@@ -145,9 +162,21 @@ class Bridgy_Config {
 		);
 
 		add_settings_field(
+			'bridgy_github',
+			__( 'Publish to Github', 'bridgy-publish' ),
+			array( $this, 'radio_callback' ),
+			'bridgy-options',
+			'bridgy-content',
+			array(
+				'name' => 'bridgy_github',
+				'list' => self::syndication_options(),
+			)
+		);
+
+		add_settings_field(
 			'omitlink',
 			__( 'Link Back to Post', 'bridgy-publish' ),
-			array( 'Bridgy_Config', 'radio_callback' ),
+			array( $this, 'radio_callback' ),
 			'bridgy-options',
 			'bridgy-content',
 			array(
@@ -159,7 +188,7 @@ class Bridgy_Config {
 		add_settings_field(
 			'ignoreformatting',
 			__( 'Disable plain text whitespace and formatting', 'bridgy-publish' ),
-			array( 'Bridgy_Config', 'checkbox_callback' ),
+			array( $this, 'checkbox_callback' ),
 			'bridgy-options',
 			'bridgy-content',
 			array(
@@ -170,7 +199,7 @@ class Bridgy_Config {
 		add_settings_field(
 			'shortlinks',
 			__( 'Send Shortlinks instead of Full URL', 'bridgy-publish' ),
-			array( 'Bridgy_Config', 'checkbox_callback' ),
+			array( $this, 'checkbox_callback' ),
 			'bridgy-options',
 			'bridgy-content',
 			array(
@@ -181,7 +210,7 @@ class Bridgy_Config {
 		add_settings_field(
 			'twitterexcerpt',
 			__( 'Set Twitter from Post Excerpt', 'bridgy-publish' ),
-			array( 'Bridgy_Config', 'checkbox_callback' ),
+			array( $this, 'checkbox_callback' ),
 			'bridgy-options',
 			'bridgy-content',
 			array(
@@ -191,7 +220,7 @@ class Bridgy_Config {
 
 	}
 
-	public static function admin_menu() {
+	public function admin_menu() {
 		// If the IndieWeb Plugin is installed use its menu.
 		if ( class_exists( 'IndieWeb_Plugin' ) ) {
 			add_submenu_page(
@@ -200,7 +229,7 @@ class Bridgy_Config {
 				__( 'Bridgy', 'bridgy-publish' ),
 				'manage_options',
 				'bridgy_options',
-				array( 'Bridgy_Config', 'options_form' )
+				array( $this, 'options_form' )
 			);
 		} else {
 			add_options_page(
@@ -208,29 +237,29 @@ class Bridgy_Config {
 				__( 'Bridgy', 'bridgy-publish' ),
 				'manage_options',
 				'bridgy_options',
-				array( 'Bridgy_Config', 'options_form' )
+				array( $this, 'options_form' )
 			);
 		}
 	}
 
-	public static function settings_link( $links ) {
+	public function settings_link( $links ) {
 		$settings_link = '<a href="options-general.php?page=bridgy_options">Settings</a>';
 		array_unshift( $links, $settings_link );
 		return $links;
 	}
 
-	public static function options_callback() {
+	public function options_callback() {
 		_e( 'Bridgy', 'bridgy-publish' );
 	}
 
-	public static function checkbox_callback( array $args ) {
+	public function checkbox_callback( array $args ) {
 		$name    = $args['name'];
 		$checked = get_option( $name );
 		echo "<input name='" . $name . "' type='hidden' value=0 />";
 		echo "<input name='" . $name . "' type='checkbox' value=1 " . checked( 1, $checked, false ) . ' /> ';
 	}
 
-	public static function syndication_options() {
+	public function syndication_options() {
 		return array(
 			''        => __( 'Disable', 'bridgy-publish' ),
 			'true'    => __( 'Enabled', 'bridgy-publish' ),
@@ -242,7 +271,7 @@ class Bridgy_Config {
 		return array(
 			''      => __( 'Show', 'bridgy-publish' ),
 			'true'  => __( 'Hide', 'bridgy-publish' ),
-			'maybe' => __( 'Maybe', 'bridgy-publish' ),
+			'maybe' => __( 'If Shortened', 'bridgy-publish' ),
 		);
 	}
 
@@ -251,10 +280,11 @@ class Bridgy_Config {
 			'twitter'  => __( 'Twitter', 'bridgy-publish' ),
 			'facebook' => __( 'Facebook', 'bridgy-publish' ),
 			'flickr'   => __( 'Flickr', 'bridgy-publish' ),
+			'github'   => __( 'Github', 'bridgy-publish' ),
 		);
 	}
 
-	public static function select_callback( array $args ) {
+	public function select_callback( array $args ) {
 		$name    = $args['name'];
 		$select  = get_option( $name );
 		$options = $args['list'];
@@ -265,7 +295,7 @@ class Bridgy_Config {
 		echo '</select>';
 	}
 
-	public static function radio_callback( array $args ) {
+	public function radio_callback( array $args ) {
 		$name    = $args['name'];
 		$select  = get_option( $name );
 		$options = $args['list'];
@@ -279,39 +309,45 @@ class Bridgy_Config {
 		echo '</fieldset>';
 	}
 
-	public static function register_form() {
+	public function register_form() {
 		echo '</form></div>';
 		echo '<h2>' . __( 'Bridgy Registration', 'bridgy-publish' ) . '</h2>';
 		echo '<p>' . __( 'Register for silos through the Bridgy site', 'bridgy-publish' ) . '</p>';
 		if ( ! get_user_meta( get_current_user_id(), 'bridgy-twitter' ) ) {
-			self::bridgy_form( 'twitter', __( 'Register for Twitter', 'bridgy-publish' ) );
+			$this->bridgy_form( 'twitter', __( 'Register for Twitter', 'bridgy-publish' ) );
 		} else {
 			echo '<a href="' . get_user_meta( get_current_user_id(), 'bridgy-twitter', true ) . '">' . __( 'Twitter User Page', 'bridgy-publish' ) . '</a>';
 		}
+		echo '<br />';
 		if ( ! get_user_meta( get_current_user_id(), 'bridgy-facebook' ) ) {
-			self::bridgy_form( 'facebook', __( 'Register for Facebook', 'bridgy-publish' ) );
+			$this->bridgy_form( 'facebook', __( 'Register for Facebook', 'bridgy-publish' ) );
 		} else {
 			echo '<a href="' . get_user_meta( get_current_user_id(), 'bridgy-facebook', true ) . '">' . __( 'Facebook User Page', 'bridgy-publish' ) . '</a>';
 		}
+		echo '<br />';
 		if ( ! get_user_meta( get_current_user_id(), 'bridgy-googleplus' ) ) {
-			self::bridgy_form( 'googleplus', __( 'Register for Google Plus', 'bridgy-publish' ) );
+			$this->bridgy_form( 'googleplus', __( 'Register for Google Plus', 'bridgy-publish' ) );
+			echo '<br />';
 		} else {
 			echo '<a href="' . get_user_meta( get_current_user_id(), 'bridgy-googleplus', true ) . '">' . __( 'Google Plus User Page', 'bridgy-publish' ) . '</a>';
 		}
+		echo '<br />';
 		if ( ! get_user_meta( get_current_user_id(), 'bridgy-instagram' ) ) {
-			self::bridgy_form( 'instagram', __( 'Register for Instagram', 'bridgy-publish' ) );
+			$this->bridgy_form( 'instagram', __( 'Register for Instagram', 'bridgy-publish' ) );
 		} else {
 			echo '<a href="' . get_user_meta( get_current_user_id(), 'bridgy-instagram', true ) . '">' . __( 'Instagram User Page', 'bridgy-publish' ) . '</a>';
 		}
+		echo '<br />';
 		if ( ! get_user_meta( get_current_user_id(), 'bridgy-flickr' ) ) {
-			self::bridgy_form( 'flickr', __( 'Register for Flickr', 'bridgy-publish' ) );
+			$this->bridgy_form( 'flickr', __( 'Register for Flickr', 'bridgy-publish' ) );
 		} else {
 			echo '<p><a href="' . get_user_meta( get_current_user_id(), 'bridgy-flickr', true ) . '">' . __( 'Flickr User Page', 'bridgy-publish' ) . '</a> </p>';
 		}
+		echo '<br />';
 
 	}
 
-	public static function bridgy_form( $service, $text, $features = array( 'listen', 'publish' ) ) {
+	public function bridgy_form( $service, $text, $features = array( 'listen', 'publish' ) ) {
 		echo '<p>';
 		echo '<form method="post" action="https://brid.gy/' . $service . '/start">';
 		echo '<input class="button-secondary" type="submit" value="' . $text . '" /><br />';
@@ -322,13 +358,7 @@ class Bridgy_Config {
 	}
 
 
-	public static function options_form() {
-		echo '<div class="wrap">';
-		echo '<h2>' . __( 'Bridgy', 'bridgy-publish' ) . '</h2>';
-		echo '<p>';
-		_e( 'Adds support for Bridgy. Register for Bridgy below', 'bridgy-publish' );
-		echo '</p><hr />';
-
+	public function options_form() {
 		if ( isset( $_GET['service'] ) ) {
 			switch ( $_GET['result'] ) {
 				case 'success':
@@ -345,13 +375,7 @@ class Bridgy_Config {
 					break;
 			}
 		}
-
-		echo '<form method="post" action="options.php">';
-		settings_fields( 'bridgy-options' );
-		do_settings_sections( 'bridgy-options' );
-		submit_button();
-		self::register_form();
-
+		load_template( plugin_dir_path( __DIR__ ) . 'templates/settings.php' );
 	}
 
 } // End Class

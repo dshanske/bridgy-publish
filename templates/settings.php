@@ -1,4 +1,3 @@
-?>
 <div class="wrap">
 <h2><?php _e( 'Bridgy', 'bridgy-publish' ); ?></h2>
 <p><?php  _e( 'Adds support for Bridgy. Register for Bridgy below', 'bridgy-publish' ); ?></p>

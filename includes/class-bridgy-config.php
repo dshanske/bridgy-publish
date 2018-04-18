@@ -376,6 +376,7 @@ class Bridgy_Config {
 			}
 		}
 		load_template( plugin_dir_path( __DIR__ ) . 'templates/settings.php' );
+		$this->register_form();
 	}
 
 } // End Class

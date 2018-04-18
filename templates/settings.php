@@ -20,7 +20,7 @@
                         }
                 }
 ?>
-<form method="post" action="options.php">';
+<form method="post" action="options.php">
 <?php settings_fields( 'bridgy-options' );
 do_settings_sections( 'bridgy-options' );
 submit_button();

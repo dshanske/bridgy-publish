@@ -35,26 +35,6 @@ module.exports = function(grunt) {
                         }
                 },
 
-
- copy: {
-           main: {
-               options: {
-                   mode: true
-               },
-               src: [
-                   '**',
-                   '!node_modules/**',
-		   '!vendor/**',
-                   '!build/**',
-                   '!.git/**',
-                   '!Gruntfile.js',
-                   '!package.json',
-                   '!.gitignore'
-               ],
-               dest: 'build/trunk/'
-           }
-       },
-
     wp_readme_to_markdown: {
       target: {
         files: {
@@ -80,8 +60,6 @@ module.exports = function(grunt) {
 
   grunt.loadNpmTasks('grunt-wp-readme-to-markdown');
   grunt.loadNpmTasks( 'grunt-wp-i18n' );
-  grunt.loadNpmTasks('grunt-contrib-sass');
-  grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-checktextdomain');
   // Default task(s).
   grunt.registerTask('default', ['wp_readme_to_markdown', 'makepot', 'checktextdomain']);

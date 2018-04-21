@@ -1,10 +1,10 @@
 === Bridgy Publish ===
 Contributors: dshanske
 Tags: indieweb, POSSE, bridgy
-Stable tag: 1.4.0
+Stable tag: 1.4.1
 Requires at least: 4.7
 Requires PHP: 5.3
-Tested up to: 4.9.3
+Tested up to: 4.9.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -27,6 +27,9 @@ For development/issues/enhancements for the Brid.gy service, please submit on th
 
 
 == Changelog == 
+
+= Version 1.4.1 (2018-xx-xx ) =
+* Bug Fixes made by @Ruxton
 
 = Version 1.4.0 (2018-02-25 ) = 
 * Refactor classes from static

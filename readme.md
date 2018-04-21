@@ -28,7 +28,7 @@ For development/issues/enhancements for the Brid.gy service, please submit on th
 
 ## Changelog ##
 
-### Version 1.4.1 (2018-xx-xx ) ###
+### Version 1.4.1 (2018-04-20 ) ###
 * Bug Fixes made by @Ruxton
 
 ### Version 1.4.0 (2018-02-25 ) ###

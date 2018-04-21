@@ -1,4 +1,4 @@
-# Bridgy Publish #
+# Bridgy for WordPress #
 **Contributors:** dshanske  
 **Tags:** indieweb, POSSE, bridgy  
 **Stable tag:** 1.4.1  

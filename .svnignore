@@ -10,3 +10,4 @@ phpunit.xml
 phpcs.xml
 README.md
 vendor
+.travis.yml

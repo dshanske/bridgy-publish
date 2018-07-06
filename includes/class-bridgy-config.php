@@ -37,17 +37,6 @@ class Bridgy_Config {
 
 		register_setting(
 			'bridgy-options', // settings page
-			'bridgy_facebook', // option name
-			array(
-				'type'         => 'string',
-				'description'  => 'Brid.gy Facebook Option',
-				'show_in_rest' => true,
-				'default'      => '',
-			)
-		);
-
-		register_setting(
-			'bridgy-options', // settings page
 			'bridgy_flickr', // option name
 			array(
 				'type'         => 'string',
@@ -133,18 +122,6 @@ class Bridgy_Config {
 			'bridgy-content',
 			array(
 				'name' => 'bridgy_twitter',
-				'list' => self::syndication_options(),
-			)
-		);
-
-		add_settings_field(
-			'bridgy_facebook',
-			__( 'Publish to Facebook', 'bridgy-publish' ),
-			array( $this, 'radio_callback' ),
-			'bridgy-options',
-			'bridgy-content',
-			array(
-				'name' => 'bridgy_facebook',
 				'list' => self::syndication_options(),
 			)
 		);
@@ -277,10 +254,9 @@ class Bridgy_Config {
 
 	public static function service_options() {
 		return array(
-			'twitter'  => __( 'Twitter', 'bridgy-publish' ),
-			'facebook' => __( 'Facebook', 'bridgy-publish' ),
-			'flickr'   => __( 'Flickr', 'bridgy-publish' ),
-			'github'   => __( 'Github', 'bridgy-publish' ),
+			'twitter' => __( 'Twitter', 'bridgy-publish' ),
+			'flickr'  => __( 'Flickr', 'bridgy-publish' ),
+			'github'  => __( 'Github', 'bridgy-publish' ),
 		);
 	}
 
@@ -319,10 +295,10 @@ class Bridgy_Config {
 			echo '<a href="' . get_user_meta( get_current_user_id(), 'bridgy-twitter', true ) . '">' . __( 'Twitter User Page', 'bridgy-publish' ) . '</a>';
 		}
 		echo '<br />';
-		if ( ! get_user_meta( get_current_user_id(), 'bridgy-facebook' ) ) {
-			$this->bridgy_form( 'facebook', __( 'Register for Facebook', 'bridgy-publish' ) );
+		if ( ! get_user_meta( get_current_user_id(), 'bridgy-github' ) ) {
+			$this->bridgy_form( 'github', __( 'Register for Github', 'bridgy-publish' ) );
 		} else {
-			echo '<a href="' . get_user_meta( get_current_user_id(), 'bridgy-facebook', true ) . '">' . __( 'Facebook User Page', 'bridgy-publish' ) . '</a>';
+			echo '<a href="' . get_user_meta( get_current_user_id(), 'bridgy-github', true ) . '">' . __( 'Github User Page', 'bridgy-publish' ) . '</a>';
 		}
 		echo '<br />';
 		if ( ! get_user_meta( get_current_user_id(), 'bridgy-googleplus' ) ) {

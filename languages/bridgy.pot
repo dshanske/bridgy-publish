@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the Bridgy package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Bridgy 1.4.1\n"
+"Project-Id-Version: Bridgy 1.4.2\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/bridgy-publish\n"
-"POT-Creation-Date: 2018-04-21 02:25:11+00:00\n"
+"POT-Creation-Date: 2018-07-06 00:53:46+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -17,39 +17,35 @@ msgstr ""
 msgid "Bridgy Publish Requires a Webmention Plugin"
 msgstr ""
 
-#: includes/class-bridgy-config.php:120
+#: includes/class-bridgy-config.php:109
 msgid "Options"
 msgstr ""
 
-#: includes/class-bridgy-config.php:127
+#: includes/class-bridgy-config.php:116
 msgid "Publish to Twitter"
 msgstr ""
 
-#: includes/class-bridgy-config.php:142
-msgid "Publish to Facebook"
-msgstr ""
-
-#: includes/class-bridgy-config.php:154
+#: includes/class-bridgy-config.php:131
 msgid "Publish to Flickr"
 msgstr ""
 
-#: includes/class-bridgy-config.php:166
+#: includes/class-bridgy-config.php:143
 msgid "Publish to Github"
 msgstr ""
 
-#: includes/class-bridgy-config.php:178 includes/class-bridgy-postmeta.php:97
+#: includes/class-bridgy-config.php:155 includes/class-bridgy-postmeta.php:97
 msgid "Link Back to Post"
 msgstr ""
 
-#: includes/class-bridgy-config.php:190
+#: includes/class-bridgy-config.php:167
 msgid "Disable plain text whitespace and formatting"
 msgstr ""
 
-#: includes/class-bridgy-config.php:201
+#: includes/class-bridgy-config.php:178
 msgid "Send Shortlinks instead of Full URL"
 msgstr ""
 
-#: includes/class-bridgy-config.php:212
+#: includes/class-bridgy-config.php:189
 msgid "Set Twitter from Post Excerpt"
 msgstr ""
 
@@ -57,91 +53,87 @@ msgstr ""
 msgid "Bridgy"
 msgstr ""
 
-#: includes/class-bridgy-config.php:264
+#: includes/class-bridgy-config.php:241
 msgid "Disable"
 msgstr ""
 
-#: includes/class-bridgy-config.php:265
+#: includes/class-bridgy-config.php:242
 msgid "Enabled"
 msgstr ""
 
-#: includes/class-bridgy-config.php:266
+#: includes/class-bridgy-config.php:243
 msgid "Checked by Default in Add Post"
 msgstr ""
 
-#: includes/class-bridgy-config.php:272
+#: includes/class-bridgy-config.php:249
 msgid "Show"
 msgstr ""
 
-#: includes/class-bridgy-config.php:273
+#: includes/class-bridgy-config.php:250
 msgid "Hide"
 msgstr ""
 
-#: includes/class-bridgy-config.php:274
+#: includes/class-bridgy-config.php:251
 msgid "If Shortened"
 msgstr ""
 
-#: includes/class-bridgy-config.php:280
+#: includes/class-bridgy-config.php:257
 msgid "Twitter"
 msgstr ""
 
-#: includes/class-bridgy-config.php:281
-msgid "Facebook"
-msgstr ""
-
-#: includes/class-bridgy-config.php:282
+#: includes/class-bridgy-config.php:258
 msgid "Flickr"
 msgstr ""
 
-#: includes/class-bridgy-config.php:283
+#: includes/class-bridgy-config.php:259
 msgid "Github"
 msgstr ""
 
-#: includes/class-bridgy-config.php:314
+#: includes/class-bridgy-config.php:290
 msgid "Bridgy Registration"
 msgstr ""
 
-#: includes/class-bridgy-config.php:315
+#: includes/class-bridgy-config.php:291
 msgid "Register for silos through the Bridgy site"
 msgstr ""
 
-#: includes/class-bridgy-config.php:317
+#: includes/class-bridgy-config.php:293
 msgid "Register for Twitter"
 msgstr ""
 
-#: includes/class-bridgy-config.php:319
+#: includes/class-bridgy-config.php:295
 msgid "Twitter User Page"
 msgstr ""
 
-#: includes/class-bridgy-config.php:323
-msgid "Register for Facebook"
+#: includes/class-bridgy-config.php:299
+msgid "Register for Github"
 msgstr ""
 
-#: includes/class-bridgy-config.php:325
-msgid "Facebook User Page"
+#: includes/class-bridgy-config.php:301
+msgid "Github User Page"
 msgstr ""
 
-#: includes/class-bridgy-config.php:329
+#: includes/class-bridgy-config.php:305
 msgid "Register for Google Plus"
 msgstr ""
 
-#: includes/class-bridgy-config.php:332
+#: includes/class-bridgy-config.php:308
 msgid "Google Plus User Page"
 msgstr ""
 
-#: includes/class-bridgy-config.php:336
+#: includes/class-bridgy-config.php:312
 msgid "Register for Instagram"
 msgstr ""
 
-#: includes/class-bridgy-config.php:338
+#: includes/class-bridgy-config.php:314
 msgid "Instagram User Page"
 msgstr ""
 
-#: includes/class-bridgy-config.php:342
+#: includes/class-bridgy-config.php:318
 msgid "Register for Flickr"
 msgstr ""
 
-#: includes/class-bridgy-config.php:344
+#: includes/class-bridgy-config.php:320
 msgid "Flickr User Page"
 msgstr ""
 
